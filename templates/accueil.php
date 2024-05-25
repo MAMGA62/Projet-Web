@@ -19,17 +19,44 @@ if (basename($_SERVER["PHP_SELF"]) != "index.php")
 
     <div class="page-header">
       <?php 
-      if(valider("connecte", "SESSION")){
-      if(!$first_name = valider("first_name", "SESSION"))
-      $first_name = "Prénom";
-      if(!$surname = valider("surname", "SESSION"))
-      $surname = "Nom";
-      echo "<h1>Bienvenue $surname $first_name !</h1>";
-      echo "<h2><b>Que vas-tu commander aujourd'hui?</b></h2>";}
-      else{
-        echo "<h1>Bonjour, n'hésite pas à te connecter pour avoir accès à ton compte.</h1>";
-        echo "<h2><b>N'hésite pas à commander le menu du jours !</b></h2>";
-      }?>
+      if(valider("connecte", "SESSION")){     // Si la personne est connectée
+        if(!$first_name = valider("first_name", "SESSION"))
+          $first_name = "Prénom";
+
+        if(!$surname = valider("surname", "SESSION"))
+          $surname = "Nom";
+      ?>
+
+          <h1>Bienvenue <?=$surname?> <?=$first_name?> !</h1>
+          <h2>Que vas-tu commander aujourd'hui?</h2>
+      
+      <?php
+      
+      } else {                                // Si la personne n'est pas connectée
+      
+      ?>
+        <h1>Bienvenue à la cafétéria</h1>
+        <h2>Vous pouvez ici réserver vos repas pour vous restaurer</h2>
+
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+
+        <form action="controleur.php">
+
+          <button value="test">Se Connecter</button>
+          <h6>Vous êtes nouveau? <a href="index.php?view=signin">Créez un compte !</a><h6>
+
+        </form>
+
+      <?php
+      }
+      ?>
     </div>
 
     

@@ -1,0 +1,38 @@
+
+* {
+    /*font-family: "Open Sans";*/
+}
+
+h1 {
+    font-size: 6.5em;
+    padding: 30px 15px 5px 15px;
+
+    font-weight: bold;
+}
+
+h6 {
+    font-size: 0.95em;
+}
+
+.page-header {
+    text-align: center;
+}
+
+#footer > .container {
+    margin-left: 30px;
+}
+
+button {
+    color: white;
+    background-color: #4D4D4D;
+
+    border-radius: 20px;
+
+    font-size: 1.7em;
+
+    padding: 15px 20px;
+}
+
+img {
+    margin: 5px;
+}
