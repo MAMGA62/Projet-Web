@@ -12,8 +12,8 @@ $BDD_base="testdb_<nom>";
 
 // MACHINE LINUX 
 $BDD_host="localhost";
-$BDD_user="root";
-$BDD_password="mysql"; // vide sous windows
-$BDD_base="2iMVC";
+$BDD_user="maxime";
+$BDD_password="GjkPSdNR"; // vide sous windows
+$BDD_base="2iCafetDB";
 
 ?>

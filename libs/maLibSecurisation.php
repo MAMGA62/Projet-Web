@@ -20,20 +20,19 @@ include_once "modele.php";	// Car on utilise la fonction connecterUtilisateur()
  */
 function verifUser($login,$password)
 {
-	
-	$id = verifUserBdd($login,$password);
+    
+    $email = verifUserBdd($login,$password);
 
-	if (!$id) return false; 
+    if (!$email) return false; 
 
-	// Cas succès : on enregistre pseudo, idUser dans les variables de session 
-	// il faut appeler session_start ! 
-	// Le controleur le fait déjà !!
-	$_SESSION["pseudo"] = $login;
-	$_SESSION["idUser"] = $id;
-	$_SESSION["connecte"] = true;
-	$_SESSION["heureConnexion"] = date("H:i:s");
-	return true;
-	
+    // Cas succès : on enregistre pseudo, idUser dans les variables de session 
+    // il faut appeler session_start ! 
+    // Le controleur le fait déjà !!
+    $_SESSION["email"] = $email; 
+    $_SESSION["connecte"] = true;
+    $_SESSION["heureConnexion"] = date("H:i:s");
+    return true;
+    
 }
 
 

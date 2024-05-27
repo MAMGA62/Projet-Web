@@ -3,6 +3,10 @@
     /*font-family: "Open Sans";*/
 }
 
+body {
+    text-align: center;
+}
+
 h1 {
     font-size: 6.5em;
     padding: 30px 15px 5px 15px;
@@ -14,12 +18,14 @@ h6 {
     font-size: 0.95em;
 }
 
+/*
 .page-header {
     text-align: center;
-}
+}*/
 
 #footer > .container {
     margin-left: 30px;
+    text-align: left;
 }
 
 button {

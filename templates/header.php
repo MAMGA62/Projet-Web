@@ -16,7 +16,7 @@ echo "<?xml version=\"1.0\" encoding=\"utf-8\" ?>";
 <!-- **** H E A D **** -->
 <head>	
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-	<title>TinyMVC ...</title>
+	<title>2i'Cafet</title>
 	<!-- <link rel="stylesheet" type="text/css" href="css/style.css"> -->
 
 	<!-- Liaisons aux fichiers css de Bootstrap -->
@@ -59,23 +59,27 @@ echo "<?xml version=\"1.0\" encoding=\"utf-8\" ?>";
       <div class="collapse navbar-collapse">
         <ul class="nav navbar-nav">
          	<!-- <li class="active"><a href="index.php?view=accueil">Accueil</a></li> -->
-		<?=mkHeadLink("Menu","menu",$view)?>
-		<?=mkHeadLink("Commander","commander",$view)?>
 		<?php
-			if(valider("admin", "SESSION")){
-				echo mkHeadLink("Stock","stock",$view);
-				echo mkHeadLink("Gestion utilisateur","gestion_user",$view);
-				echo mkHeadLink("Caisse","caisse",$view);
-
-			}
 
 		// Si l'utilisateur n'est pas connecte, on affiche un lien de connexion 
-		echo mkHeadLink("Mon panier","panier",$view);
 
-		if (!valider("connecte","SESSION"))
-			echo mkHeadLink("Se connecter","login",$view); 
+		if (!valider("connecte","SESSION")){
+			echo mkHeadLink("Se connecter","login",$view);
+		
+		} else {
+			if(isAdmin($_SESSION["email"])){
+                echo mkHeadLink("Stock","stock",$view);
+                echo mkHeadLink("Gestion utilisateur","gestion_user",$view);
+                echo mkHeadLink("Caisse","caisse",$view);
 
-		else echo mkHeadLink("Se déconnecter","logout",$view); 
+            }
+			echo mkHeadLink("Menu", "menu",$view); 
+			echo mkHeadLink("Commander","order",$view); 
+
+			echo mkHeadLink("Mon panier","panier",$view);
+
+			echo "<li> <a href=\"controleur.php?action=Logout\">Se déconnecter</a></li>";
+		} 
 
 			//echo "<li><a href=\"index.php?view=login\">Se connecter</a></li>";
 		?>

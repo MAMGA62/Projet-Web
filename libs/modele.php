@@ -4,7 +4,24 @@
 // inclure ici la librairie faciliant les requêtes SQL
 include_once("maLibSQL.pdo.php");
 
+function verifUserBdd($login,$passe){
+    // Vérifie l'identité d'un utilisateur 
+    // dont les identifiants sont passes en paramètre
+    // renvoie faux si user inconnu
+    // renvoie l'id de l'utilisateur si succès
 
+    $SQL="SELECT email FROM users WHERE email='$login' AND password='$passe'";
+
+    return SQLGetChamp($SQL);
+    // si on avait besoin de plus d'un champ
+    // on aurait du utiliser SQLSelect
+}
+
+function isAdmin($email){
+    // vérifie si l'utilisateur est un administrateur
+    $SQL ="SELECT admin FROM users WHERE email='$email'";
+    return SQLGetChamp($SQL); 
+}
 
 // Connexion :
 function connecterUtilisateur($email, $password){
@@ -102,4 +119,53 @@ function supprimerCommande($id_order){
 	DELETE * FROM orders WHERE id_order = '$id_order;";
 	return SQLDelete($SQL);
 }
+
+
+// Gestion de event
+function supprimerEvenement($date_event){ 
+    $SQL = "DELETE FROM menus_events WHERE date_event = '$date_event'; DELETE FROM events WHERE date_event = '$date_event'; ";
+    return SQLDelete($SQL);
+}
+
+function ajouterEvenement($name, $date_event, $url){
+    $SQL = "INSERT INTO events(date_event, name, menus_url) VALUES('$date_event', '$name', '$url')";
+    return SQLInsert($SQL);
+}
+
+function clearEvenement($date_event){
+    $SQL = "DELETE FROM menus_events WHERE date_event = '$date_event'; ";
+    return SQLDelete($SQL);
+}
+function ajouterMenuEvenement($id_menu, $date_event){
+    $SQL = "INSERT INTO menus_events(date_event, id_menu) VALUES('$date_event', '$id_menu')";
+    return SQLInsert($SQL);
+}
+
+function modifierEvenement($date_event, $name, $url){
+    $SQL = "UPDATE events set name = '$name', menus_url='$url' WHERE date_event ='$date_event'";
+    return SQLUpdate($SQL);
+}
+
+
+// Utile :
+function recupererEvenements(){
+	$SQL = "SELECT * FROM events";
+	return parcoursRs(SQLSelect($SQL));
+}
+
+function recupererMenus(){
+	$SQL = "SELECT * FROM menus";
+	return parcoursRs(SQLSelect($SQL));
+}
+
+function recupererMenusEvenements($date_event){
+	$SQL = "SELECT * FROM menus_events JOIN menus ON menus_events.id_menu = menus.id_menu WHERE date_event = '$date_event'";
+	return parcoursRs(SQLSelect($SQL));
+}
+
+function recupererMenuContent($id_menu){
+	$SQL = "SELECT * FROM products WHERE id_product IN (SELECT id_product FROM menus_content WHERE id_menu = '$id_menu');";
+	return parcoursRs(SQLSelect($SQL));
+}
+
 ?>

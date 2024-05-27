@@ -47,12 +47,8 @@ if (basename($_SERVER["PHP_SELF"]) != "index.php")
         <br/>
         <br/>
 
-        <form action="controleur.php">
-
-          <button value="test">Se Connecter</button>
+        <a href="index.php?view=login"><button>Se Connecter</button></a>
           <h6>Vous êtes nouveau? <a href="index.php?view=signin">Créez un compte !</a><h6>
-
-        </form>
 
       <?php
       }

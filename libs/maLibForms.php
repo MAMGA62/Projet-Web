@@ -103,7 +103,7 @@ function mkTable($tabData,$listeChamps=false)
 // mkSelect("idUser",$users,"id","pseudo");
 // TESTER AVEC mkSelect("idUser",$users,"id","pseudo",2,"couleur");
 
-function mkSelect($nomChampSelect, $tabData,$champValue, $champLabel,$selected=false,$champLabel2=false)
+function mkSelect($nomChampSelect, $tabData,$champValue, $champLabel,$selected=false,$champLabel2=false, $attrs="")
 {
 
 	$multiple=""; 
