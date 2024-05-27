@@ -163,8 +163,14 @@ function recupererMenusEvenements($date_event){
 	return parcoursRs(SQLSelect($SQL));
 }
 
-function recupererMenuContent($id_menu){
-	$SQL = "SELECT * FROM products WHERE id_product IN (SELECT id_product FROM menus_content WHERE id_menu = '$id_menu');";
+function recupererMenuContent($id_menu, $type=""){
+	if ($type != ""){
+		$sup = "AND type = '$type'";
+	} else {
+		$sup = "";
+	}
+
+	$SQL = "SELECT * FROM products WHERE id_product IN (SELECT id_product FROM menus_content WHERE id_menu = '$id_menu') $sup;";
 	return parcoursRs(SQLSelect($SQL));
 }
 

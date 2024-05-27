@@ -109,7 +109,7 @@ function mkSelect($nomChampSelect, $tabData,$champValue, $champLabel,$selected=f
 	$multiple=""; 
 	if (preg_match('/.*\[\]$/',$nomChampSelect)) $multiple =" multiple =\"multiple\" ";
 
-	echo "<select $multiple name=\"$nomChampSelect\">\n";
+	echo "<select $multiple name=\"$nomChampSelect\" $attrs>\n";
 	foreach ($tabData as $data)
 	{
 		$sel = "";	// par défaut, aucune option n'est préselectionnée 
