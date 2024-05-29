@@ -77,9 +77,10 @@ function commanderProduit($id_order, $id_product, $quantity){
 
 // Stock :
 function recupererProduits(){
-	$SQL = "SELECT id_product, name, type, quantity FROM products;";
-	return parcoursRs(SQLSelect($SQL));
+    $SQL = "SELECT id_product, name, type, quantity FROM products WHERE type = 'plat';";
+    return parcoursRs(SQLSelect($SQL));
 }
+
 
 function modifierStock($id_product){
 	$SQL = "UPDATE products SET quantity = quantity + “quantity” WHERE id_product = '$id_product';";
@@ -169,9 +170,36 @@ function recupererMenuContent($id_menu, $type=""){
 	} else {
 		$sup = "";
 	}
-
-	$SQL = "SELECT * FROM products WHERE id_product IN (SELECT id_product FROM menus_content WHERE id_menu = '$id_menu') $sup;";
+	$SQL = "SELECT * FROM products JOIN menus_content ON products.id_product = menus_content.id_product WHERE menus_content.id_menu = '$id_menu' $sup;";
+	// $SQL = "SELECT * FROM products WHERE id_product IN (SELECT id_product FROM menus_content WHERE id_menu = '$id_menu') $sup;";
 	return parcoursRs(SQLSelect($SQL));
+}
+
+
+function recupererIngredient(){
+    $SQL = "SELECT id_product, name, type, quantity FROM products WHERE type = 'autre';";
+    return parcoursRs(SQLSelect($SQL));
+}
+
+function supprimerIngredient($id_product){
+    $SQL = "DELETE FROM products_content WHERE id_ingredient = '$id_product'; DELETE FROM products WHERE id_product = '$id_product'; ";
+    return SQLDelete($SQL);
+}
+
+function ajouterProduit($name, $price){
+    $SQL="INSERT INTO products(name, quantity, price, type) VALUES('$name', '0', '$price', 'plat');";
+    return SQLInsert($SQL);
+}
+
+function supprimerProduit($id_product){
+    $SQL = "DELETE FROM products_content WHERE id_product = '$id_product'; DELETE FROM products WHERE id_product = '$id_product'; ";
+    return SQLDelete($SQL);
+}
+
+
+function recupererContenuProduit($id_product){
+    $SQL = "SELECT products.id_product, products.name, products.type, products.quantity FROM products JOIN products_content ON products.id_product = products_content.id_ingredient WHERE products_content.id_product = '$id_product'";
+    return parcoursRs(SQLSelect($SQL));
 }
 
 ?>

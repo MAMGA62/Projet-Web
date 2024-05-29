@@ -36,21 +36,27 @@
                 $infos[$events[$e]["date_event"]]["menus"][$menus[$m]["id_menu"]]["name"] = $menus[$m]["name"];
                 $infos[$events[$e]["date_event"]]["menus"][$menus[$m]["id_menu"]]["price"] = $menus[$m]["price"];
 
-                $infos[$events[$e]["date_event"]]["menus"][$menus[$m]["id_menu"]]["products"] = array();
 
+                $types = array("plat", "boisson", "dessert", "autre");          // On stocke chaque type de produits
 
-                $products = recupererMenuContent($menus[$m]["id_menu"]);
+                for ($i = 0; $i < count($types); $i++){
 
-                for ($p = 0; $p < count($products); $p++){
+                    $infos[$events[$e]["date_event"]]["menus"][$menus[$m]["id_menu"]][$types[$i]] = array();
 
-                    //$infos[$events[$e]["date_event"]]["menus"][$menus[$m]["id_menu"]][$products[$p]["id_product"]] = array();
+                    $products = recupererMenuContent($menus[$m]["id_menu"], $types[$i]);
 
-                    $infos[$events[$e]["date_event"]]["menus"][$menus[$m]["id_menu"]]["products"][$products[$p]["id_product"]]["name"] = $products[$p]["name"];
-                    $infos[$events[$e]["date_event"]]["menus"][$menus[$m]["id_menu"]]["products"][$products[$p]["id_product"]]["type"] = $products[$p]["type"];
-                    $infos[$events[$e]["date_event"]]["menus"][$menus[$m]["id_menu"]]["products"][$products[$p]["id_product"]]["quantity"] = $products[$p]["quantity"];
-                    $infos[$events[$e]["date_event"]]["menus"][$menus[$m]["id_menu"]]["products"][$products[$p]["id_product"]]["price"] = $products[$p]["price"];
+                    for ($p = 0; $p < count($products); $p++){
 
+                        //$infos[$events[$e]["date_event"]]["menus"][$menus[$m]["id_menu"]][$products[$p]["id_product"]] = array();
+
+                        $infos[$events[$e]["date_event"]]["menus"][$menus[$m]["id_menu"]][$types[$i]][$products[$p]["id_product"]]["name"] = $products[$p]["name"];
+                        $infos[$events[$e]["date_event"]]["menus"][$menus[$m]["id_menu"]][$types[$i]][$products[$p]["id_product"]]["type"] = $products[$p]["type"];
+                        $infos[$events[$e]["date_event"]]["menus"][$menus[$m]["id_menu"]][$types[$i]][$products[$p]["id_product"]]["quantity"] = $products[$p]["quantity"];
+                        $infos[$events[$e]["date_event"]]["menus"][$menus[$m]["id_menu"]][$types[$i]][$products[$p]["id_product"]]["price"] = $products[$p]["price"];
+
+                    }
                 }
+
 
             }
 
@@ -63,16 +69,42 @@
     
     //if (valider("connecte", "SESSION")){
         $infos = getInfos();
+        
+        // tprint($infos);
+        $selected_values = array();     // Tableau qui contient les valeurs sélectionnées
+
+        if (!empty($infos)){            // Si le tableau contient des événements
+            $selected_values["date_event"] = array_key_first($infos);       // On ajoute par défaut le 1er événement de la liste
+
+            if (!empty($m = $infos[$selected_values["date_event"]]["menus"])){      // Si l'événement contient des menus
+                // tprint($m);
+                $selected_values["menu"] = array_key_first($m);   // On ajoute par défaut le 1er menu de la liste
+
+                if (!empty($p = $m[$selected_values["menu"]]["plat"])){
+                    $selected_values["content"] = array_key_first($p);
+                }
+
+                if (!empty($p = $m[$selected_values["menu"]]["boisson"])){
+                    $selected_values["drink"] = array_key_first($p);
+                }
+
+                if (!empty($p = $m[$selected_values["menu"]]["dessert"])){
+                    $selected_values["dessert"] = array_key_first($p);
+                }
+
+            }
+        }
+
+        // tprint($selected_values);
         $products = recupererMenuContent(1);
 
         // tprint($products);
 
-        $menus = recupererMenus();
-
 
                     
 ?>
-
+    <form action="controleur.php">
+        <div>
         <label for="date_event">Date :</label>
 
         <?php
@@ -80,22 +112,23 @@
 
             // tprint($dates);
 
-            mkSelect("date_event", $dates, "date_event", "date_event", $selected="",$champLabel2=false, "id=\"date_event\" onchange='updateMenus(event, " . json_encode($infos) . ")'\"");
+            mkSelect("date_event", $dates, "date_event", "date_event", $selected_values["date_event"],$champLabel2=false, "id=\"date_event\" onchange='updateMenus(" . json_encode($infos) . ")'\"");
         
         ?>
+        </div>
 
         <hr>
 
         <div>
-            <label>Menu :</label>
+            <label for="menu">Menu :</label>
 
             <?php
-            // $menus = recupererMenusEvenements($date_event);
+            $menus = recupererMenusEvenements($selected_values["date_event"]);
             // tprint($menus);
             ?>
 
             <?php
-            mkSelect("id_menu", $menus, "id_menu", "name", $selected="",$champLabel2=false, "id=\"menu\" onchange=\"updateProducts(event)\"");
+            mkSelect("id_menu", $menus, "id_menu", "name", $selected_values["menu"], $champLabel2=false, "id=\"menu\" onchange='updateContent(" . json_encode($infos) . ")'\"");
             ?>
 
         </div>
@@ -103,11 +136,12 @@
         <hr>
         
         <div>
-            <label>Contenu :</label>
+            <label for="content">Contenu :</label>
             <?php
             // $menu_content = recupererMenuContent();
-            $content = recupererMenuContent(, "plat");
-            mkSelect("id_menu", $menus, "id_menu", "name", $selected="",$champLabel2=false, "id=\"menu\" onchange=\"updateProducts(event)\"");
+            
+            $content = recupererMenuContent($selected_values["menu"], "plat");
+            mkSelect("id_product", $content, "id_product", "name", $selected_values["content"], "quantity", "id=\"content\"");
             // tprint($menu_content);
             ?>
         </div>
@@ -115,14 +149,33 @@
         <hr>
 
         <div>
-            <label>Boisson :</label>
+            <label for="drink">Boisson :</label>
+            <?php
+            $drink = recupererMenuContent($selected_values["menu"], "boisson");
+            mkSelect("id_product", $drink, "id_product", "name", $selected_values["content"], "quantity", "id=\"drink\"");
+            ?>
         </div>
 
         <hr>
         
         <div>
-            <label>Dessert</label>
+            <label for="dessert">Dessert</label>
+            <?php
+            $dessert = recupererMenuContent($selected_values["menu"], "dessert");
+            mkSelect("id_product", $dessert, "id_product", "name", $selected_values["content"], "quantity", "id=\"dessert\"");
+            ?>
         </div>
+        
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+
+        <button type="submit" name="action" value="order">Finaliser la commande</button>
+    
+    </form>
 
 <?php
     

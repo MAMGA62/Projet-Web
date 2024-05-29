@@ -28,6 +28,10 @@ h6 {
     text-align: left;
 }
 
+label {
+    font-size: 1.2em;
+}
+
 button {
     color: white;
     background-color: #4D4D4D;
