@@ -139,6 +139,26 @@ session_start();
 				}
 				
 				break;
+			
+			case "Order":
+				
+				if (valider("connecte", "SESSION")){
+
+					$date_event = valider("date_event");
+					$id_menu = valider("id_menu");
+					$id_content = valider("id_content");
+					$id_drink = valider("id_drink");
+					$id_dessert = valider("id_dessert");
+
+					if (verifOrder($date_event, $id_menu, $id_content, $id_drink, $id_dessert)){
+						$addArgs = "?view=panier";
+					} else {
+						$addArgs = "?view=order";
+					}
+
+				}
+
+				break;
 
 
 

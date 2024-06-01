@@ -2,6 +2,9 @@
 <script src="js/script.js"></script>
 
 <?php
+
+    tprint($_SESSION);
+
     // Récupère toutes les informations sur les événements, leurs menus, leurs produits sous la forme d'un tableau associatif
     function getInfos(){
 
@@ -141,7 +144,7 @@
             // $menu_content = recupererMenuContent();
             
             $content = recupererMenuContent($selected_values["menu"], "plat");
-            mkSelect("id_product", $content, "id_product", "name", $selected_values["content"], "quantity", "id=\"content\"");
+            mkSelect("id_content", $content, "id_product", "name", $selected_values["content"], "quantity", "id=\"content\"");
             // tprint($menu_content);
             ?>
         </div>
@@ -152,7 +155,7 @@
             <label for="drink">Boisson :</label>
             <?php
             $drink = recupererMenuContent($selected_values["menu"], "boisson");
-            mkSelect("id_product", $drink, "id_product", "name", $selected_values["content"], "quantity", "id=\"drink\"");
+            mkSelect("id_drink", $drink, "id_product", "name", $selected_values["content"], "quantity", "id=\"drink\"");
             ?>
         </div>
 
@@ -162,7 +165,7 @@
             <label for="dessert">Dessert</label>
             <?php
             $dessert = recupererMenuContent($selected_values["menu"], "dessert");
-            mkSelect("id_product", $dessert, "id_product", "name", $selected_values["content"], "quantity", "id=\"dessert\"");
+            mkSelect("id_dessert", $dessert, "id_product", "name", $selected_values["content"], "quantity", "id=\"dessert\"");
             ?>
         </div>
         
@@ -173,7 +176,7 @@
         <br/>
         <br/>
 
-        <button type="submit" name="action" value="order">Finaliser la commande</button>
+        <button type="submit" name="action" value="Order">Finaliser la commande</button>
     
     </form>
 

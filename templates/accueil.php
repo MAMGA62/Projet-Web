@@ -20,11 +20,13 @@ if (basename($_SERVER["PHP_SELF"]) != "index.php")
     <div class="page-header">
       <?php 
       if(valider("connecte", "SESSION")){     // Si la personne est connectée
-        if(!$first_name = valider("first_name", "SESSION"))
-          $first_name = "Prénom";
-
-        if(!$surname = valider("surname", "SESSION"))
-          $surname = "Nom";
+        if(valider("connecte", "SESSION")){     // Si la personne est connectée
+          if(!$first_name = valider("prenom", "SESSION")){
+            $first_name = $_SESSION["prenom"];
+          }
+          if(!$surname = valider("nom", "SESSION"))
+            $surname =  $_SESSION["nom"];
+          }
       ?>
 
           <h1>Bienvenue <?=$surname?> <?=$first_name?> !</h1>

@@ -29,6 +29,12 @@ function connecterUtilisateur($email, $password){
 	return SQLGetChamp($SQL);
 }
 
+function getInfoUser($email)
+{
+    $SQL="SELECT first_name, surname, waster_score, banned FROM users WHERE email='$email'";
+    return parcoursRs(SQLSelect($SQL));
+}
+
 // Créer un compte :
 
 function verifierUtilisateur($login, $passe){
@@ -200,6 +206,101 @@ function supprimerProduit($id_product){
 function recupererContenuProduit($id_product){
     $SQL = "SELECT products.id_product, products.name, products.type, products.quantity FROM products JOIN products_content ON products.id_product = products_content.id_ingredient WHERE products_content.id_product = '$id_product'";
     return parcoursRs(SQLSelect($SQL));
+}
+
+function isMenuInEvenement($date_event, $id_menu){	// Permet de savoir si un menu est présent dans un événement 
+	$SQL = "SELECT id_menu FROM menus_events WHERE id_menu = '$id_menu' AND date_event = '$date_event';";
+	return (SQLGetChamp($SQL) !== false);
+}
+
+function evenementExiste($date_event){
+	$SQL = "SELECT date_event FROM events WHERE date_event = '$date_event';";
+	return (SQLGetChamp($SQL) !== false);
+}
+
+/*
+function produitExiste($id_produit, $type = ""){
+
+	$sup = "";
+
+	if ($type != ""){
+		$sup = " AND type = '$type'";
+	}
+
+	$SQL = "SELECT * FROM products WHERE id_product = '$id_produit'$sup;";
+}
+*/
+
+function isProduitInMenu($id_menu, $id_content, $type = ""){
+	if ($id_content === false){
+		return true;
+	}
+	if ($type != ""){
+		$SQL = "SELECT products.id_product FROM menus_content JOIN products ON menus_content.id_product = products.id_product WHERE menus_content.id_menu = '$id_menu' AND menus_content.id_product = '$id_content' AND products.type = '$type';";
+	} else {
+		$SQL = "SELECT id_product FROM menus_content WHERE id_menu = '$id_menu' AND id_product = '$id_content';";
+	}
+
+	return (SQLGetChamp($SQL) !== false);
+
+}
+
+
+function isEnStock($id_ingredient, $quantite){
+
+	$SQL = "SELECT quantity FROM products WHERE id_product = '$id_ingredient'";
+	$res = SQLGetChamp($SQL);
+
+	if ($res !== false){
+		return ($res >= $quantite);
+	}
+
+	return false;
+}
+
+
+function recupererIngredientsProduit($id_produit){
+	$SQL = "SELECT products_content.id_ingredient, products_content.quantity, products.quantity AS stock FROM products_content JOIN products ON products_content.id_ingredient = products.id_product WHERE products_content.id_product = '$id_produit';";
+
+	return parcoursRs(SQLSelect($SQL));
+}
+
+function recupererProduit($id_produit){
+	$SQL = "SELECT * FROM products WHERE id_product = '$id_produit';";
+	return parcoursRs(SQLSelect($SQL))[0];
+}
+
+function recupererStockProduitMenu($id_menu, $id_produit){
+	$SQL = "SELECT quantity FROM menus_content WHERE id_menu = '$id_menu' AND id_product = '$id_produit';";
+	return SQLGetChamp($SQL);
+}
+
+function verifierStockIngredientsProduit($id_produit, $id_menu = ""){
+
+	if ($id_produit === false){
+		return true;
+	}
+
+	$i = recupererIngredientsProduit($id_produit);
+
+	tprint($i);
+
+	if (!empty($i)){
+		for ($k = 0; $k < count($i); $k++){
+			if ($i[$k]["quantity"] > $i[$k]["stock"]){
+				return false;
+			}
+		}
+	} else {	// Le produit n'est pas composé d'ingrédients, on regarde directement son stock
+		tprint("produit :");
+		$p = recupererProduit($id_produit);
+
+		tprint($p);
+		return $p["quantity"] >= recupererStockProduitMenu($id_menu, $id_produit);
+	}
+
+	return true;
+
 }
 
 ?>

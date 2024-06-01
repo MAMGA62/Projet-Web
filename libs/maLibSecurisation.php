@@ -28,7 +28,13 @@ function verifUser($login,$password)
     // Cas succès : on enregistre pseudo, idUser dans les variables de session 
     // il faut appeler session_start ! 
     // Le controleur le fait déjà !!
-    $_SESSION["email"] = $email; 
+    $_SESSION["email"] = $email;
+    $info = getInfoUser($_SESSION["email"]);
+    $_SESSION["nom"] = getInfoUser($email)[0]["first_name"];
+    $_SESSION["prenom"] = getInfoUser($email)[0]["surname"];
+    $_SESSION["admin"] = isAdmin($email);
+    $_SESSION["waster_score"] = getInfoUser($email)[0]["waster_score"]; 
+    $_SESSION["banned"] = getInfoUser($email)[0]["banned"];
     $_SESSION["connecte"] = true;
     $_SESSION["heureConnexion"] = date("H:i:s");
     return true;
@@ -55,6 +61,65 @@ function securiser($urlBad,$urlGood=false)
 		if ($urlGood)
 			rediriger($urlGood);
 	}
+}
+
+
+function verifOrder($date_event, $id_menu, $id_content, $id_drink, $id_dessert){
+    //tprint($date_event);
+    // tprint($e = evenementExiste($date_event));
+    // tprint($id_menu);
+
+    // $e = evenementExiste($date_event);
+    // $m = isMenuInEvenement($date_event, $id_menu);
+    // $c = isProduitInMenu($id_menu, $id_content, "plat");
+
+    // tprint($m);
+    // tprint(empty($m));
+    // tprint($c);
+
+    // $s = verifierStockIngredientsProduit($id_content);
+
+    /*
+    if ($e){
+        tprint("evenement existe");
+    } else {
+        tprint("evenement existe pas");
+    }
+
+    if ($m){
+        tprint("menu existe dans les events");
+    } else {
+        tprint("menu existe pas dans les events");
+    }
+
+    if ($c){
+        tprint("content existe dans menu");
+    } else {
+        tprint("content existe pas dans menu");
+    }
+
+    if ($s){
+        tprint("stock dispo");
+    } else {
+        tprint("stock pas dispo");
+    }
+    */
+
+    //tprint($m);
+
+    if (evenementExiste($date_event))
+    if (isMenuInEvenement($date_event, $id_menu))
+    if (isProduitInMenu($id_menu, $id_content, "plat"))
+    if (isProduitInMenu($id_menu, $id_drink, "boisson"))
+    if (isProduitInMenu($id_menu, $id_dessert, "dessert"))
+    if (verifierStockIngredientsProduit($id_content, $id_menu))
+    if (verifierStockIngredientsProduit($id_drink, $id_menu))
+    if (verifierStockIngredientsProduit($id_dessert, $id_menu)){
+        // tprint("Tout est bon!");
+        return true;
+    }
+
+    return false;
 }
 
 ?>
