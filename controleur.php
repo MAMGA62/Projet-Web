@@ -139,7 +139,55 @@ session_start();
 				}
 				
 				break;
-			
+			case "Creer Ingredient" :
+					if ($name = valider("name"))
+					if ($quantity = valider("quantity")){
+						ajouterIngredient($name, $quantity);
+						$addArgs .= "?view=edit_stock";
+					}
+					
+					break;
+					
+				case "Supprimer Ingredient":
+					if ($id_product = valider("id_product")){
+					supprimerIngredient($id_product);
+					$addArgs .= "?view=edit_stock";
+					
+					}
+					
+					break;
+					case "Modifier Stock":
+						if ($id_product = valider("id_product"))
+						if(($quantity = valider("quantity"))!==false)
+						{
+						modifierStock($id_product, $quantity);
+						$addArgs .= "?view=edit_stock";
+						
+						}
+						
+						break;
+
+
+				case "Creer Produit" :
+					if ($name = valider("name"))
+					if ($price = valider("price")){
+						ajouterProduit($name, $price);
+						$addArgs .= "?view=edit_product";
+					}
+					
+					break;
+					
+				case "Supprimer Produit":
+					if ($id_product = valider("id_product")){
+					supprimerProduit($id_product);
+					$addArgs .= "?view=edit_product";
+					
+					}
+					
+					break;
+
+
+		}
 			case "Order":
 				
 				if (valider("connecte", "SESSION")){
