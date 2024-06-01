@@ -12,7 +12,22 @@ $email = valider("email", "SESSION");
 $first_name = valider("first_name", "SESSION");
 $surname = valider("surname", "SESSION") ;
 
+
+if(valider("id_product", "COOKIE"))
+$id_product= valider("id_product", "COOKIE");
+else $id_product = 1;
 ?>
+<script>
+function switchProduct(elt){
+	var id = elt.value;
+	document.cookie = "id_product=" + encodeURIComponent(id) + "; path=/";
+	console.log(id);
+	location.reload(true);
+	return;
+
+}
+	
+</script>
 
 <div class="page-header">
 </div>
@@ -39,10 +54,11 @@ endForm();
 echo "</br></br>";
 
 $listeIngredient = recupererIngredient();
+$quantity = recupererQuantité($id_product);
 echo "<h2>Modifier un stock </h2>";
 mkForm("controleur.php");
-mkSelect("id_product", $listeIngredient,"id_product", "name");
-mkInput("number", "quantity", "", "placeHolder=\"Quantité\"  step=\"1\"");
+mkSelect("id_product", $listeIngredient,"id_product", "name", $id_product, false, "onchange=\"switchProduct(this)\"");
+mkInput("number", "quantity", $quantity);
 mkInput("submit", "action", "Modifier Stock");
 endForm();
 echo "</br></br>";

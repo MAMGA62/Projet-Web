@@ -12,16 +12,15 @@ $email = valider("email", "SESSION");
 $first_name = valider("first_name", "SESSION");
 $surname = valider("surname", "SESSION") ;
 if(valider("id_product", "COOKIE"))
-$id_product = $valider("id_product", "COOKIE");
+$id_product= valider("id_product", "COOKIE");
 else $id_product = 1;
-tprint($id_product); 	
 ?>
 <script>
 function switchProduct(elt){
 	var id = elt.value;
-	setcookie("id_product", id, time()+5);
+	document.cookie = "id_product=" + encodeURIComponent(id) + "; path=/";
 	
-	reload(true);
+	location.reload(true);
 	return;
 
 }
@@ -34,21 +33,22 @@ function switchProduct(elt){
 <?php
 echo "<h2>Supprimer un ingredient du produit </h2>";
 $listeProduit = recupererProduits();
-$listeIngredient = recupererIngredient();
+$listeIngredient = recupererContenuNonProduit($id_product);
+$listeContenu = recupererContenuProduit($id_product);
 
 mkForm("controleur.php");
-mkSelect("id_product", $listeProduit,"id_product", "name", false, false);
-mkSelect("id_product", $listeIngredient,"id_product", "name");
-mkInput("submit", "action", "Supprimer Produit");
+mkSelect("id_product", $listeProduit,"id_product", "name", $id_product, false, "onchange=\"switchProduct(this)\"");
+mkSelect("id_ingredient", $listeContenu,"id_product", "name");
+mkInput("submit", "action", "Supprimer Contenu Produit");
 endForm();
 echo "</br></br>";
 
-$listeContenu = recupererContenuProduit($id_product);
 echo "<h2>Ajouter un ingredient au produit </h2>";
 mkForm("controleur.php");
-mkSelect("id_product", $listeProduit,"id_product", "name", false, false, "onchange=\"switchProduct(this)\"");
-mkSelect("id_product", $listeIngredient,"id_product", "name");
-mkInput("submit", "action", "Supprimer Produit");
+mkSelect("id_product", $listeProduit,"id_product", "name", $id_product, false, "onchange=\"switchProduct(this)\"");
+mkSelect("id_ingredient", $listeIngredient,"id_product", "name");
+mkInput("number", "quantity", "", "placeHolder=\"Quantité\"  step=\"1\"");
+mkInput("submit", "action", "Ajouter Contenu Produit");
 endForm();
 echo "</br></br>";
 

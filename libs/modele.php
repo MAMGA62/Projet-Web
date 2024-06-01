@@ -183,7 +183,7 @@ function recupererMenuContent($id_menu, $type=""){
 
 
 function recupererIngredient(){
-    $SQL = "SELECT id_product, name, type, quantity FROM products WHERE type = 'autre';";
+    $SQL = "SELECT id_product, name, type, quantity FROM products WHERE quantity IS NOT NULL;";
     return parcoursRs(SQLSelect($SQL));
 }
 
@@ -303,4 +303,23 @@ function verifierStockIngredientsProduit($id_produit, $id_menu = ""){
 
 }
 
+
+function recupererContenuNonProduit($id_product){
+    $SQL = "SELECT products.id_product, products.name, products.type, products.quantity FROM products JOIN products_content ON products.id_product = products_content.id_ingredient WHERE products_content.id_product != '$id_product'";
+    return parcoursRs(SQLSelect($SQL));
+}
+function ajouterIngredientProduit($id_product, $id_ingredient, $quantity){
+    $SQL = "INSERT INTO `products_content`(`id_product`, `id_ingredient`, `quantity`) VALUES ('$id_product','$id_ingredient','$quantity')";
+    return SQLInsert($SQL);
+}
+function supprimerIngredientProduit($id_product, $id_ingredient){
+    $SQL = "DELETE FROM products_content WHERE id_ingredient = '$id_product' AND id_product = '$id_product';";
+    return SQLDelete($SQL);
+}
+
+function recupererQuantité($id_product){
+	$SQL = "SELECT quantity FROM products WHERE id_product =  '$id_product'";
+    return SQLGetChamp($SQL);
+
+}
 ?>

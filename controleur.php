@@ -185,7 +185,26 @@ session_start();
 					}
 					
 					break;
+					case "Ajouter Contenu Produit" :
+						if ($id_product = valider("id_product"))
+						if($quantity = valider("quantity"))
+						if ($id_ingredient = valider("id_ingredient")){
+							ajouterIngredientProduit($id_product, $id_ingredient, $quantity);
+							$addArgs .= "?view=edit_product_content";
+						}
+						
+						break;
+						
+					case "Supprimer Contenu Produit":
+						if ($id_product = valider("id_product"))
+						if ($id_ingredient = valider("id_ingredient")){
 
+							supprimerIngredientProduit($id_product, $id_ingredient);
+						$addArgs .= "?view=edit_product_content";
+						
+						}
+						
+						break;
 
 		
 			case "Order":
