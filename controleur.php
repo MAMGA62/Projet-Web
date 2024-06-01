@@ -187,7 +187,7 @@ session_start();
 					break;
 
 
-		}
+		
 			case "Order":
 				
 				if (valider("connecte", "SESSION")){
