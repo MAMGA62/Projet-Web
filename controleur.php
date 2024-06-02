@@ -226,8 +226,82 @@ session_start();
 				}
 
 				break;
+				
+			case 'Promouvoir' : 				
+				if ($email = valider("email"))
+				if (valider("connecte","SESSION"))
+				if (isAdmin($_SESSION["email"])) 
+				if (is_array($email)) {
+					foreach($email as $nextEmail) {
+						modifierUser($nextEmail, 1, 0); 
+					}
+				}  
+				else {
+					modifierUser($email, 1, 0);
+				} 
+				$addArgs = "?view=gestion_user"; 
+			break;
 
+			case 'Retrograder' : 				
+				if ($email = valider("email"))
+				if (valider("connecte","SESSION"))
+				if (isAdmin($_SESSION["email"])) 
+				if (is_array($email)) {
+					foreach($email as $nextEmail) {
+						modifierUser($nextEmail, 0, 0); 
+					}
+				}  
+				else {
+					modifierUser($email, 0, 0);
+				} 
+				$addArgs = "?view=gestion_user"; 
+			break;
+			
 
+			case 'Autoriser' : 				
+				if ($email = valider("email"))
+				if (valider("connecte","SESSION"))
+				if (isAdmin($_SESSION["email"])) 
+				if (is_array($email)) {
+					foreach($email as $nextEmail) {
+						modifierUser($nextEmail, 0, 0); 
+					}
+				}  
+				else {
+					modifierUser($email, 0, 0);
+				} 
+				$addArgs = "?view=gestion_user"; 
+			break;
+
+			case 'Interdire' :  
+				if ($email = valider("email"))
+				if (valider("connecte","SESSION"))
+				if (isAdmin($_SESSION["email"])) 
+				if (is_array($email)) {
+					foreach($email as $nextEmail) {
+						modifierUser($nextEmail, 0, 1); 
+					}
+				}  
+				else {
+					modifierUser($email, 0, 1);
+				} 
+				$addArgs = "?view=gestion_user"; 
+			break;
+
+			case 'Supprimer' :  
+				if ($email = valider("email"))
+				if (valider("connecte","SESSION"))
+				if (isAdmin($_SESSION["email"])) 
+				if (is_array($email)) {
+					foreach($email as $nextEmail) {
+						supprimerUser($nextEmail); 
+					}
+				}  
+				else {
+					supprimerUser($email);
+				} 
+				$addArgs = "?view=gestion_user";
+			break;
 
 
 		}
