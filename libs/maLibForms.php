@@ -128,6 +128,78 @@ function mkSelect($nomChampSelect, $tabData,$champValue, $champLabel,$selected=f
 	}
 	echo "</select>\n";
 }
+$critereTriSelect = 0; 
+
+function triSelect($data1,$data2) {
+	global $critereTriSelect;
+	echo "criterr :$critereTriSelect";
+	// renvoyer data1[champ] - data2[champ]
+	return $data1[$critereTriSelect] - $data2[$critereTriSelect];
+
+}
+
+function mkSelect2($nomChampSelect, $tabData,$champValue, $champLabel,$selected=false,$champLabel2=false,$champCategorie=false,$tagsLabelsCategories=false)
+{
+	global $critereTriSelect;
+
+	$multiple=""; 
+	if (preg_match('/.*\[\]$/',$nomChampSelect)) $multiple =" multiple =\"multiple\" ";
+
+	echo "<select $multiple name=\"$nomChampSelect\">\n";
+	
+	// trier suivant le champ catégorie 
+	// => à faire en SQL ?? trop tard 
+	// => plus tard en js ?? difficile en LE1, facile en LE2 
+	
+	// ICI : en php 
+	// si un paramètre est fourni 
+	if ($champCategorie) {
+		$critereTriSelect = $champCategorie; 
+		uasort($tabData, 'triSelect');
+		$lastChampCat = ""; 
+		$hasStarted = false;
+		echo $tagsLabelsCategories[0]; 
+	}
+	
+	foreach ($tabData as $data)
+	{
+		// produire une éventuelle balise optgroup
+		if ($champCategorie) {
+			// détecter un changement de valeur pour le champCategorie
+			// si sa valeur change, on ajoute un nouvel optgroup
+			if ($data[$champCategorie] != $lastChampCat) {
+				if ($hasStarted) {
+					echo "</optgroup>";
+				} 
+				$hasStarted = true; 	
+				$lastChampCat = $data[$champCategorie];
+				echo '<optgroup label="' . $tagsLabelsCategories[$lastChampCat] . '">'; 
+			}
+		}
+		
+		
+		// produire la balise option 
+	
+		$sel = "";	// par défaut, aucune option n'est préselectionnée 
+		// MAIS SI le champ selected est fourni
+		// on teste s'il est égal à l'identifiant de l'élément en cours d'affichage
+		// cet identifiant est celui qui est affiché dans le champ value des options
+		// i.e. $data[$champValue]
+		if ( ($selected) && ($selected == $data[$champValue]) )
+			$sel = "selected=\"selected\"";
+
+		echo "<option $sel value=\"$data[$champValue]\">\n";
+		echo  $data[$champLabel] . "\n";
+		if ($champLabel2) 	// SI on demande d'afficher un second label
+			echo  " $data[$champLabel2]\n";
+		echo "</option>\n";
+	}
+	
+	if ($champCategorie) {
+		echo "</optgroup>";
+	}
+	echo "</select>\n";
+}
 
 function mkForm($action="",$method="get")
 {
