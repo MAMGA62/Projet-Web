@@ -96,8 +96,26 @@ function modifierStock($id_product){
 
 // Users : 
 function modifierUser($email, $admin, $banned){
-	$SQL = "UPDATE users SET admin = '$admin', banned = '$banned' WHERE email  = '$email;";
+	$SQL = "UPDATE users SET admin = '$admin', banned = '$banned' WHERE email  = '$email'";
 	return SQLUpdate($SQL);
+}
+
+function listerUtilisateurs($classe = "both")
+{
+	$SQL = "select * from users";
+	if ($classe == "bl")
+		$SQL .= " where banned=1";
+	if ($classe == "nbl")
+		$SQL .= " where banned=0";
+	
+	// echo $SQL;
+	return parcoursRs(SQLSelect($SQL));
+
+}
+
+function supprimerUser($email){
+	$SQL = "DELETE FROM users WHERE email = '$email'";
+	return SQLDelete($SQL);
 }
 
 // Caisse :
