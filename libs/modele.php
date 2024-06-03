@@ -88,8 +88,8 @@ function recupererProduits(){
 }
 
 
-function modifierStock($id_product){
-	$SQL = "UPDATE products SET quantity = quantity + “quantity” WHERE id_product = '$id_product';";
+function modifierStock($id_product, $quantity){
+	$SQL = "UPDATE products SET quantity =  '$quantity' WHERE id_product = '$id_product';";
 	return SQLUpdate($SQL);
 }
 

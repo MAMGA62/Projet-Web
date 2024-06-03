@@ -69,7 +69,7 @@ session_start();
 				if ($id_menu = valider("id_menu"))
 				if($quantity = valider("quantity"))
 				{
-				
+				if($quantity < 0)$quantity = 0;
 				ajouterContenuMenu($id_menu, $id_product, $quantity);
 				$addArgs .= "?view=edit_menu";
 				
@@ -79,7 +79,7 @@ session_start();
 				if ($name = valider("name"))
 				if($price = valider("price"))
 				{
-				
+				if($price < 0)$price = 0;
 				ajouterMenu($name, $price);
 				$addArgs .= "?view=edit_menu";
 				
@@ -142,6 +142,7 @@ session_start();
 			case "Creer Ingredient" :
 					if ($name = valider("name"))
 					if ($quantity = valider("quantity")){
+						if($quantity = 0)$quantity = 0;
 						ajouterIngredient($name, $quantity);
 						$addArgs .= "?view=edit_stock";
 					}
@@ -171,6 +172,7 @@ session_start();
 				case "Creer Produit" :
 					if ($name = valider("name"))
 					if ($price = valider("price")){
+						if($price = 0)$price = 0;
 						ajouterProduit($name, $price);
 						$addArgs .= "?view=edit_product";
 					}
@@ -189,6 +191,7 @@ session_start();
 						if ($id_product = valider("id_product"))
 						if($quantity = valider("quantity"))
 						if ($id_ingredient = valider("id_ingredient")){
+							if($quantity<0)$quantity = 0;
 							ajouterIngredientProduit($id_product, $id_ingredient, $quantity);
 							$addArgs .= "?view=edit_product_content";
 						}
