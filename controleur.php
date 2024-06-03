@@ -25,7 +25,10 @@ session_start();
 				{
 					// On verifie l'utilisateur, 
 					// et on crée des variables de session si tout est OK
-					// Cf. maLibSecurisation
+					// Cf. maLibSecurisation$
+					$login = htmlentities($login);
+					$passe = htmlentities($passe);
+
 					if (verifUser($login,$passe)) {
 						// tout s'est bien passé, doit-on se souvenir de la personne ? 
 						if (valider("remember")) {
@@ -50,11 +53,11 @@ session_start();
             break;
 
             case 'Signin';
-                $first_name = valider("first_name");
-                $surname = valider("surname");
-                $email = valider("email");
-                $pass = valider("pass");
-                $confirm_pass = valider("confirm_pass");
+                $first_name = htmlentities(valider("first_name"));
+                $surname = htmlentities(valider("surname"));
+                $email = htmlentities(valider("email"));
+                $pass = htmlentities(valider("pass"));
+                $confirm_pass = htmlentities(valider("confirm_pass"));
                 if($pass == $confirm_pass){
                     creerUtilisateur($email, $first_name, $surname, $pass);
                 }
@@ -69,17 +72,18 @@ session_start();
 				if ($id_menu = valider("id_menu"))
 				if($quantity = valider("quantity"))
 				{
-				if($quantity < 0)$quantity = 0;
+				if($quantity < 0)$quantity = 1;
 				ajouterContenuMenu($id_menu, $id_product, $quantity);
 				$addArgs .= "?view=edit_menu";
 				
 				}
 				break;
 				case "Creer Menu" :
-				if ($name = valider("name"))
+				if ($name = htmlentities(valider("name")))
 				if($price = valider("price"))
 				{
-				if($price < 0)$price = 0;
+				if($price < 0)$price = 1;
+
 				ajouterMenu($name, $price);
 				$addArgs .= "?view=edit_menu";
 				
@@ -102,10 +106,10 @@ session_start();
 				
 				
 			case "Modifier Event" :
-				if ($date_event = valider("date_event"))
+				if ($date_event = htmlentities(valider("date_event")))
 				if ($id_menu = valider("id_menu"))
-				if($url = valider("url"))
-				if($name = valider("name")){
+				if($url = htmlentities(valider("url")))
+				if($name = htmlentities(valider("name"))){
 					clearEvent($date_event);
 					foreach($id_menu as $elt){
 						echo $elt;
@@ -121,9 +125,9 @@ session_start();
 
 
 			case "Creer Event" :
-				if ($name = valider("name"))
-				if ($date_event = valider("date_event"))
-				if($url = valider("url")){
+				if ($name = htmlentities(valider("name")))
+				if ($date_event = htmlentities(valider("date_event")))
+				if($url = htmlentities(valider("url"))){
 					echo $date_event;
 					ajouterEvenement($name, $date_event, $url);
 					$addArgs .= "?view=edit_event";
@@ -132,7 +136,7 @@ session_start();
 				break;
 				
 			case "Supprimer Event":
-				if ($date_event = valider("date_event")){
+				if ($date_event = htmlentities(valider("date_event"))){
 				supprimerEvenement($date_event);
 				$addArgs .= "?view=edit_event";
 				
@@ -140,7 +144,7 @@ session_start();
 				
 				break;
 			case "Creer Ingredient" :
-					if ($name = valider("name"))
+					if ($name = htmlentities(valider("name")))
 					if ($quantity = valider("quantity")){
 						if($quantity < 1)$quantity = 1;
 						ajouterIngredient($name, $quantity);
@@ -170,9 +174,9 @@ session_start();
 
 
 				case "Creer Produit" :
-					if ($name = valider("name"))
+					if ($name = htmlentities(valider("name")))
 					if ($price = valider("price")){
-						if($price < 0)$price = 0;
+						if($price < 0)$price = 1;
 						ajouterProduit($name, $price);
 						$addArgs .= "?view=edit_product";
 					}
@@ -214,7 +218,7 @@ session_start();
 				
 				if (valider("connecte", "SESSION")){
 
-					$date_event = valider("date_event");
+					$date_event = htmlentities(valider("date_event"));
 					$id_menu = valider("id_menu");
 					$id_content = valider("id_content");
 					$id_drink = valider("id_drink");
@@ -251,7 +255,7 @@ session_start();
 				break;
 				
 			case 'Promouvoir' : 				
-				if ($email = valider("email"))
+				if ($email = htmlentities(valider("email")))
 				if (valider("connecte","SESSION"))
 				if (isAdmin($_SESSION["email"])) 
 				if (is_array($email)) {
@@ -266,7 +270,7 @@ session_start();
 			break;
 
 			case 'Retrograder' : 				
-				if ($email = valider("email"))
+				if ($email = htmlentities(valider("email")))
 				if (valider("connecte","SESSION"))
 				if (isAdmin($_SESSION["email"])) 
 				if (is_array($email)) {
@@ -282,7 +286,7 @@ session_start();
 			
 
 			case 'Autoriser' : 				
-				if ($email = valider("email"))
+				if ($email = htmlentities(valider("email")))
 				if (valider("connecte","SESSION"))
 				if (isAdmin($_SESSION["email"])) 
 				if (is_array($email)) {
@@ -297,7 +301,7 @@ session_start();
 			break;
 
 			case 'Interdire' :  
-				if ($email = valider("email"))
+				if ($email = htmlentities(valider("email")))
 				if (valider("connecte","SESSION"))
 				if (isAdmin($_SESSION["email"])) 
 				if (is_array($email)) {
@@ -312,7 +316,7 @@ session_start();
 			break;
 
 			case 'Supprimer' :  
-				if ($email = valider("email"))
+				if ($email = htmlentities(valider("email")))
 				if (valider("connecte","SESSION"))
 				if (isAdmin($_SESSION["email"])) 
 				if (is_array($email)) {
