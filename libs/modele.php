@@ -51,7 +51,7 @@ function creerUtilisateur($email, $first_name, $surname, $password){
 
 // Gestion de menu
 function supprimerMenu($id_menu){ 
-	$SQL = "DELETE * FROM menus WHERE id_menu = '$id_menu'";
+	$SQL = "DELETE FROM menus WHERE id_menu = '$id_menu'";
 	return SQLDelete($SQL);
 }
 
@@ -71,13 +71,14 @@ function recupererPrixMenu($id_menu){
 	return SQLGetChamp($SQL);
 }
 
-function ajouterCommande($email, $date, $total, $status){
+function ajouterCommande($email, $date, $total, $status = "non validee"){
 	$SQL="INSERT INTO orders (email, date_event, total, status) VALUES('$email', '$date', '$total' , '$status');";
 	return SQLInsert($SQL);
 }
 
 function commanderProduit($id_order, $id_product, $quantity){
-	$SQL = "INSERT INTO orders_content(id_order, id_produit, quantity) VALUES('$id_order', '$id_product', '$quantity');";
+	tprint($id_product);
+	$SQL = "INSERT INTO orders_content(id_order, id_product, quantity) VALUES('$id_order', '$id_product', '$quantity');";
 	return SQLInsert($SQL);
 }
 
@@ -120,17 +121,23 @@ function supprimerUser($email){
 
 // Caisse :
 function validerCommande($id_order){
-	$SQL = "UPDATE orders set status = validée WHERE id_order = '$id_order';";
-	return SQLUpdate($SQL);
+    $SQL = "UPDATE orders set status = 'validee' WHERE id_order = '$id_order';";
+    return SQLUpdate($SQL);
 }
 
-function recupererCommandeNonValide(){
-	$SQL = "SELECT o.id_order, u.first_name, u.surname, o.total FROM orders as o JOIN users as u ON u.email = o.email WHERE o.status !=validée";
-	return parcoursRS(SQLSelect($SQL));
+function recupererCommandeNonValide($date_event){
+    $SQL = "SELECT o.id_order, u.first_name, u.surname, o.total, o.email, e.name FROM orders as o JOIN users as u ON u.email = o.email JOIN events AS e ON o.date_event = e.date_event WHERE o.status !='validee'  AND e.date_event='$date_event'";
+    return parcoursRS(SQLSelect($SQL));
 }
+
 function recupererContenuCommande($id_order){
 	$SQL = "SELECT p.name FROM product as p JOIN orders_content as o ON o.id_product = p.id_product WHERE id_order ='$id_order' ";
 	return parcoursRS(SQLSelect($SQL));
+}
+
+function recupererCommandeUser($email){
+    $SQL = "SELECT o.id_order, u.first_name, u.surname, o.total, o.email , e.name FROM orders as o JOIN users as u ON u.email = o.email JOIN events AS e ON o.date_event = e.date_event WHERE o.status !='validee'  AND u.email='$email'";
+    return parcoursRS(SQLSelect($SQL));
 }
 
 function malusUtilisateur($email){
@@ -140,11 +147,16 @@ function malusUtilisateur($email){
 
 // Panier :
 function supprimerCommande($id_order){
-	$SQL = "DELETE * FROM orders_content WHERE id_order = '$id_order';
-	DELETE * FROM orders WHERE id_order = '$id_order;";
+	$SQL = "DELETE FROM orders_content WHERE id_order = '$id_order';
+	DELETE FROM orders WHERE id_order = '$id_order';";
 	return SQLDelete($SQL);
 }
 
+function isCancelable($id_order){
+    $SQL = "SELECT events.cancelable_orders FROM events JOIN orders ON events.date_event = orders.date_event WHERE id_order =  '$id_order'";
+    return SQLGetChamp($SQL);
+
+}
 
 // Gestion de event
 function supprimerEvenement($date_event){ 
@@ -340,4 +352,15 @@ function recupererQuantité($id_product){
     return SQLGetChamp($SQL);
 
 }
+
+function recupererPrix($id_menu){
+	$SQL = "SELECT price FROM menus WHERE id_menu = 'id_menu';";
+	return SQLGetChamp($SQL);
+}
+
+function recupererQuantiteProduitMenu($id_menu, $id_produit){
+	$SQL = "SELECT quantity FROM menus_content WHERE id_menu = '$id_menu' AND id_product = '$id_produit'";
+	return SQLGetChamp($SQL);
+}
+
 ?>

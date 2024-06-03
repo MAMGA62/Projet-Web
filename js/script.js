@@ -1,4 +1,17 @@
 
+function updateTotal(infos){
+    console.log("updateTotal");
+
+    var refTotal = document.getElementById("total");
+    var refTotalInput = document.getElementById("totalinput");
+
+    var refEventsSelect = document.getElementById("date_event");
+    var refMenusSelect = document.getElementById("menu");
+
+    refTotal.innerHTML = infos[refEventsSelect.value]["menus"][refMenusSelect.value]["price"];
+    refTotalInput.value = infos[refEventsSelect.value]["menus"][refMenusSelect.value]["price"];
+}
+
 function updateContent(infos){
     console.log("updateContent");
     var refEventsSelect = document.getElementById("date_event");
@@ -10,7 +23,7 @@ function updateContent(infos){
 
     var new_content;
 
-
+    updateTotal(infos);
 
     // var refContentSelect = document.getElementById();
 

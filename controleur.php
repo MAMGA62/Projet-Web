@@ -142,7 +142,7 @@ session_start();
 			case "Creer Ingredient" :
 					if ($name = valider("name"))
 					if ($quantity = valider("quantity")){
-						if($quantity = 0)$quantity = 0;
+						if($quantity < 1)$quantity = 1;
 						ajouterIngredient($name, $quantity);
 						$addArgs .= "?view=edit_stock";
 					}
@@ -172,7 +172,7 @@ session_start();
 				case "Creer Produit" :
 					if ($name = valider("name"))
 					if ($price = valider("price")){
-						if($price = 0)$price = 0;
+						if($price < 0)$price = 0;
 						ajouterProduit($name, $price);
 						$addArgs .= "?view=edit_product";
 					}
@@ -191,7 +191,7 @@ session_start();
 						if ($id_product = valider("id_product"))
 						if($quantity = valider("quantity"))
 						if ($id_ingredient = valider("id_ingredient")){
-							if($quantity<0)$quantity = 0;
+							if($quantity<1)$quantity = 1;
 							ajouterIngredientProduit($id_product, $id_ingredient, $quantity);
 							$addArgs .= "?view=edit_product_content";
 						}
@@ -219,8 +219,28 @@ session_start();
 					$id_content = valider("id_content");
 					$id_drink = valider("id_drink");
 					$id_dessert = valider("id_dessert");
+					$id_total = valider("total");
+
+					if ($id_total === false){
+						$id_total = recupererPrix($id_menu);
+					}
 
 					if (verifOrder($date_event, $id_menu, $id_content, $id_drink, $id_dessert)){
+						// tprint($date_event);
+						$id_order = ajouterCommande($_SESSION["email"], $date_event, $id_total);
+
+						if ($id_content !== false){
+							commanderProduit($id_order, $id_content, recupererQuantiteProduitMenu($id_menu, $id_content));
+						}
+						
+						if ($id_drink !== false){
+							commanderProduit($id_order, $id_drink, recupererQuantiteProduitMenu($id_menu, $id_drink));
+						}
+
+						if ($id_dessert !== false){
+							commanderProduit($id_order, $id_dessert, recupererQuantiteProduitMenu($id_menu, $id_dessert));
+						}
+						
 						$addArgs = "?view=panier";
 					} else {
 						$addArgs = "?view=order";
@@ -305,6 +325,22 @@ session_start();
 				} 
 				$addArgs = "?view=gestion_user";
 			break;
+
+			case 'Valider commande':
+                if($id_order = valider("id_order")){
+                    validerCommande($id_order);
+                    $addArgs = "?view=caisse";
+                }
+				break;
+			
+			case 'Supprimer commande':
+                if($id_order = valider("id_order"))
+                    if(isCancelable($id_order))
+                    {
+                        supprimerCommande($id_order);
+                        $addArgs = "?view=caisse";
+                    }
+				break;
 
 
 		}

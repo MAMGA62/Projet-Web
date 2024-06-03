@@ -3,7 +3,7 @@
 
 <?php
 
-    tprint($_SESSION);
+    // tprint($_SESSION);
 
     // Récupère toutes les informations sur les événements, leurs menus, leurs produits sous la forme d'un tableau associatif
     function getInfos(){
@@ -65,12 +65,14 @@
 
         }
 
+        // tprint($infos);
+
         return $infos;
 
     }
 
     
-    //if (valider("connecte", "SESSION")){
+    if (valider("connecte", "SESSION")){
         $infos = getInfos();
         
         // tprint($infos);
@@ -82,6 +84,7 @@
             if (!empty($m = $infos[$selected_values["date_event"]]["menus"])){      // Si l'événement contient des menus
                 // tprint($m);
                 $selected_values["menu"] = array_key_first($m);   // On ajoute par défaut le 1er menu de la liste
+                $selected_values["total"] = $m[$selected_values["menu"]]["price"];
 
                 if (!empty($p = $m[$selected_values["menu"]]["plat"])){
                     $selected_values["content"] = array_key_first($p);
@@ -174,14 +177,18 @@
         <br/>
         <br/>
         <br/>
+
+        <?php
+        echo "<p>Total : <span id=\"total\">" . $infos[$selected_values["date_event"]]["menus"][$selected_values["menu"]]["price"] . "</span>€</p>";
+        ?>
         <br/>
 
+        <input id="totalinput" type="hidden" name="total" value="<?=$selected_values["total"]?>"/>
         <button type="submit" name="action" value="Order">Finaliser la commande</button>
     
     </form>
 
 <?php
-    
-    //}
+    }
 
 ?>
