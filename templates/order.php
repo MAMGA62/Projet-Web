@@ -88,17 +88,39 @@
 
                 if (!empty($p = $m[$selected_values["menu"]]["plat"])){
                     $selected_values["content"] = array_key_first($p);
+                } else {
+                    $selected_values["content"] = false;
                 }
 
                 if (!empty($p = $m[$selected_values["menu"]]["boisson"])){
                     $selected_values["drink"] = array_key_first($p);
+                } else {
+                    $selected_values["drink"] = false;
                 }
 
                 if (!empty($p = $m[$selected_values["menu"]]["dessert"])){
                     $selected_values["dessert"] = array_key_first($p);
+                } else {
+                    $selected_values["dessert"] = false;
                 }
 
+            } else {
+                $selected_values["menu"] = false;
+                $selected_values["total"] = false;
+
+                $selected_values["content"] = false;
+                $selected_values["drink"] = false;
+                $selected_values["dessert"] = false;
             }
+        } else {
+            $selected_values["date_event"] = false;
+            $selected_values["menu"] = false;
+            $selected_values["total"] = false;
+
+            $selected_values["content"] = false;
+            $selected_values["drink"] = false;
+            $selected_values["dessert"] = false;
+            
         }
 
         // tprint($selected_values);
@@ -109,21 +131,32 @@
 
                     
 ?>
+    <h2>Commander</h2>
+    <hr/>
     <form action="controleur.php">
-        <div>
-        <label for="date_event">Date :</label>
 
         <?php
-            $dates = recupererEvenements();
 
-            // tprint($dates);
+            // tprint($selected_values);
+
+            if (empty($dates = recupererEvenements())){
+                echo "<h3>Aucun événement n'est prévu pour le moment...</h3><br/><hr/>";
+            }
+        ?>
+        
+        <div>
+            <label for="date_event">Date :</label>
+
+        <?php
+
+            //tprint($dates);
+            $dates = recupererEvenements();
 
             mkSelect("date_event", $dates, "date_event", "date_event", $selected_values["date_event"],$champLabel2=false, "id=\"date_event\" onchange='updateMenus(" . json_encode($infos) . ")'\"");
         
         ?>
+            <hr>
         </div>
-
-        <hr>
 
         <div>
             <label for="menu">Menu :</label>
@@ -137,56 +170,58 @@
             mkSelect("id_menu", $menus, "id_menu", "name", $selected_values["menu"], $champLabel2=false, "id=\"menu\" onchange='updateContent(" . json_encode($infos) . ")'\"");
             ?>
 
-        </div>
+            <hr>
 
-        <hr>
-        
-        <div>
-            <label for="content">Contenu :</label>
-            <?php
-            // $menu_content = recupererMenuContent();
+        </div>
+                <div>
+                    <label for="content">Contenu :</label>
+                    <?php
+                    // $menu_content = recupererMenuContent();
+                    $content = recupererMenuContent($selected_values["menu"], "plat");
+                    mkSelect("id_content", $content, "id_product", "name", $selected_values["content"], "quantity", "id=\"content\"");
+                    // tprint($content);
+                    ?>
+                    <hr>
+                </div>
+
+                <div>
+                    <label for="drink">Boisson :</label>
+                    <?php
+                    $drink = recupererMenuContent($selected_values["menu"], "boisson");
+                    mkSelect("id_drink", $drink, "id_product", "name", $selected_values["content"], "quantity", "id=\"drink\"");
+                    ?>
+                    
+                    <hr>
+                </div>
+                
+                <div>
+                    <label for="dessert">Dessert</label>
+                    <?php
+                    $dessert = recupererMenuContent($selected_values["menu"], "dessert");
+                    mkSelect("id_dessert", $dessert, "id_product", "name", $selected_values["content"], "quantity", "id=\"dessert\"");
+                    ?>
+                </div>
+                
+                <br/>
+                <br/>
+                <br/>
+                <br/>
+                <br/>
+
+                <?php
+                if ($selected_values["menu"] === false){
+                    $val = "";
+                } else {
+                    $val = $infos[$selected_values["date_event"]]["menus"][$selected_values["menu"]]["price"];
+                }
+                echo "<p>Total : <span id=\"total\">" . $val . "</span>€</p>";
+                ?>
+                <br/>
+
+                <input id="totalinput" type="hidden" name="total" value="<?=$selected_values["total"]?>"/>
+                <button type="submit" name="action" value="Order">Finaliser la commande</button>
             
-            $content = recupererMenuContent($selected_values["menu"], "plat");
-            mkSelect("id_content", $content, "id_product", "name", $selected_values["content"], "quantity", "id=\"content\"");
-            // tprint($menu_content);
-            ?>
-        </div>
-
-        <hr>
-
-        <div>
-            <label for="drink">Boisson :</label>
-            <?php
-            $drink = recupererMenuContent($selected_values["menu"], "boisson");
-            mkSelect("id_drink", $drink, "id_product", "name", $selected_values["content"], "quantity", "id=\"drink\"");
-            ?>
-        </div>
-
-        <hr>
-        
-        <div>
-            <label for="dessert">Dessert</label>
-            <?php
-            $dessert = recupererMenuContent($selected_values["menu"], "dessert");
-            mkSelect("id_dessert", $dessert, "id_product", "name", $selected_values["content"], "quantity", "id=\"dessert\"");
-            ?>
-        </div>
-        
-        <br/>
-        <br/>
-        <br/>
-        <br/>
-        <br/>
-
-        <?php
-        echo "<p>Total : <span id=\"total\">" . $infos[$selected_values["date_event"]]["menus"][$selected_values["menu"]]["price"] . "</span>€</p>";
-        ?>
-        <br/>
-
-        <input id="totalinput" type="hidden" name="total" value="<?=$selected_values["total"]?>"/>
-        <button type="submit" name="action" value="Order">Finaliser la commande</button>
-    
-    </form>
+            </form>
 
 <?php
     }

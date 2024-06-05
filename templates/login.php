@@ -31,15 +31,15 @@ if ($msg = valider("msg")) {
 
  <form role="form" action="controleur.php">
   <div class="form-group">
-    <label for="email">Login</label>
-    <input type="text" class="form-control" id="email" name="login" value="<?php echo $login;?>" >
+    <label for="email">Adresse email</label>
+    <input type="email" placeholder="Adresse email" maxlength="320" class="form-control" id="email" name="login" value="<?=$login?>" >
   </div>
   <div class="form-group">
-    <label for="pwd">Passe</label>
-    <input type="password" class="form-control" id="pwd" name="passe" value="<?php echo $passe;?>">
+    <label for="pwd">Mot de passe</label>
+    <input type="password" title="Taille maximale : 30 caractères" placeholder="Mot de passe" maxlength="30" class="form-control" id="pwd" name="passe" value="<?=$passe?>">
   </div>
   <div class="checkbox">
-    <label><input type="checkbox" name="remember" <?php echo $checked;?> >Se souvenir de moi</label>
+    <label><input type="checkbox" name="remember" <?=$checked?> >Se souvenir de moi</label>
   </div>
   <button type="submit" name="action" value="Connexion">Connexion</button>
 </form>

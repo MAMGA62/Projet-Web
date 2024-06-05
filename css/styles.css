@@ -46,3 +46,10 @@ button {
 img {
     margin: 5px;
 }
+
+
+th, td {
+    text-align: center;
+
+    padding: 5px 20px;
+}

@@ -39,15 +39,15 @@ if ((!valider("connecte","SESSION")) || (!isAdmin($_SESSION["email"]))) {
 
     <p class="lead"> 
 
-			<h2>Liste des utilisateurs de la base </h2>
+			<h2>Liste des utilisateurs :</h2>
 			<?php
-			echo "liste des utilisateurs autorises de la base :"; 
+			echo "<h4>Liste des utilisateurs autorisés :</h4>"; 
 			$users = listerUtilisateurs("nbl");
 			// tprint($users);	// préférer un appel à 
 			mkTable($users,array("email","surname", "first_name", "admin"));
 
 			echo "<hr />";
-			echo "liste des utilisateurs non autorises de la base :"; 
+			echo "<h4>Liste des utilisateurs non autorisés :</h4>"; 
 			$users = listerUtilisateurs("bl");
 			//tprint($users);	// préférer un appel à mkTable($users);
 			mkTable($users,array("email","surname", "first_name", "admin"));

@@ -23,6 +23,8 @@ echo "<?xml version=\"1.0\" encoding=\"utf-8\" ?>";
 	<link href="bootstrap/css/bootstrap.min.css" rel="stylesheet" />
 	<link href="bootstrap/css/bootstrap-theme.min.css" rel="stylesheet" />
 	<link href="css/sticky-footer.css" rel="stylesheet" />
+
+	<link rel="icon" href="ressources/icon.ico" />
 	
 	<link href="css/styles.css" rel="stylesheet"/>
 	<!--[if lt IE 9]>
@@ -61,7 +63,9 @@ echo "<?xml version=\"1.0\" encoding=\"utf-8\" ?>";
          	<!-- <li class="active"><a href="index.php?view=accueil">Accueil</a></li> -->
 		<?php
 
-		// Si l'utilisateur n'est pas connecte, on affiche un lien de connexion 
+		// Si l'utilisateur n'est pas connecte, on affiche un lien de connexion
+
+		echo mkHeadLink("<img src=\"ressources/home.png\" width=\"24\"/>", "accueil", $view, "", "style=\"padding:8px;\"");
 
 		if (!valider("connecte","SESSION")){
 			echo mkHeadLink("Se connecter","login",$view);
@@ -69,7 +73,7 @@ echo "<?xml version=\"1.0\" encoding=\"utf-8\" ?>";
 		} else {
 			if(isAdmin($_SESSION["email"])){
                 echo mkHeadLink("Stock","stock",$view);
-                echo mkHeadLink("Gestion utilisateur","gestion_user",$view);
+                echo mkHeadLink("Gestion utilisateurs","gestion_user",$view);
                 echo mkHeadLink("Caisse","caisse",$view);
 
             }
