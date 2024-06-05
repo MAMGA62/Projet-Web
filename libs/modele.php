@@ -131,7 +131,7 @@ function recupererCommandeNonValide($date_event){
 }
 
 function recupererContenuCommande($id_order){
-	$SQL = "SELECT p.name FROM product as p JOIN orders_content as o ON o.id_product = p.id_product WHERE id_order ='$id_order' ";
+	$SQL = "SELECT p.name ,o.quantity FROM products as p JOIN orders_content as o ON o.id_product = p.id_product WHERE id_order ='$id_order' ";
 	return parcoursRS(SQLSelect($SQL));
 }
 
@@ -146,9 +146,9 @@ function malusUtilisateur($email){
 }
 
 // Panier :
-function supprimerCommande($id_order){
-	$SQL = "DELETE FROM orders_content WHERE id_order = '$id_order';
-	DELETE FROM orders WHERE id_order = '$id_order';";
+function annulerCommande($id_order, $email){
+	$SQL = "DELETE orders_content FROM orders_content JOIN orders ON orders.id_order = orders_content.id_order WHERE orders.id_order = '$id_order' AND orders.email = '$email';
+	DELETE FROM orders WHERE id_order = '$id_order' AND email = '$email';";
 	return SQLDelete($SQL);
 }
 
@@ -363,4 +363,8 @@ function recupererQuantiteProduitMenu($id_menu, $id_produit){
 	return SQLGetChamp($SQL);
 }
 
+function recupererUserCommande($id_order){
+	$SQL = "SELECT first_name, surname FROM users JOIN orders ON users.email = orders.email WHERE orders.id_order =  '$id_order'";
+    return parcoursRs(SQLSelect($SQL));
+}
 ?>

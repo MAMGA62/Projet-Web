@@ -337,12 +337,13 @@ session_start();
                 }
 				break;
 			
-			case 'Supprimer commande':
+			case 'Annuler commande':
                 if($id_order = valider("id_order"))
                     if(isCancelable($id_order))
+					if($email = valider("email"))
                     {
-                        supprimerCommande($id_order);
-                        $addArgs = "?view=caisse";
+                        annulerCommande($id_order, $email);
+                        $addArgs = "?view=panier";
                     }
 				break;
 
