@@ -6,6 +6,7 @@ session_start();
 	include_once "libs/maLibSecurisation.php"; 
 	include_once "libs/modele.php"; 
 
+	$urlBase = dirname($_SERVER["PHP_SELF"]) . "/index.php";
 	$addArgs = "";
 
 	if ($action = valider("action"))
@@ -53,17 +54,37 @@ session_start();
             break;
 
             case 'Signin';
-                $first_name = htmlentities(valider("first_name"));
-                $surname = htmlentities(valider("surname"));
-                $email = htmlentities(valider("email"));
-                $pass = htmlentities(valider("pass"));
-                $confirm_pass = htmlentities(valider("confirm_pass"));
-                if($pass == $confirm_pass){
-                    creerUtilisateur($email, $first_name, $surname, $pass);
-                }
-                else{
-                    //TODO: message d'erreur
-                }
+                if (($first_name = htmlentities(valider("first_name")))
+				&&	($surname = htmlentities(valider("surname")))
+				&&	($email = htmlentities(valider("email")))
+				&&	($pass = htmlentities(valider("pass")))
+				&&	($confirm_pass = htmlentities(valider("confirm_pass")))){
+					tprint($first_name);
+
+					if($pass == $confirm_pass){
+
+						if (isUserInBdd($email) !== false){
+							$msg = "Un compte possède déjà cette adresse email...";
+							$addArgs = "?view=signin&msg=" . urlencode($msg);
+						}
+
+						creerUtilisateur($email, $first_name, $surname, $pass);
+						$urlBase = dirname($_SERVER["PHP_SELF"]) . "/controleur.php";
+						$addArgs = "?action=Connexion&login=" . urlencode($email) . "&passe=" . urlencode($pass);
+
+
+					} else {
+						//TODO: message d'erreur
+						$msg = "Les mots de passes ne correspondent pas...";
+						$addArgs = "?view=signin&msg=" . urlencode($msg);
+					}
+
+				} else {
+					$msg = "Les informations entrées sont incorrectes... Renseignez bien tous les champs !";
+					$addArgs = "?view=signin&msg=" . urlencode($msg);
+				}
+
+
             break;
 
 
@@ -107,16 +128,18 @@ session_start();
 				
 			case "Modifier Event" :
 				if ($date_event = htmlentities(valider("date_event")))
-				if ($id_menu = valider("id_menu"))
-				if($url = htmlentities(valider("url")))
-				if($name = htmlentities(valider("name"))){
-					clearEvent($date_event);
+				if ($id_menu = valider("id_menu")){
+
+					$name = htmlentities(valider("name"));
+					$url = htmlentities(valider("url"));
+
+					clearEvenement($date_event);
 					foreach($id_menu as $elt){
 						echo $elt;
-						ajouterMenuEvent($elt, $date_event);
+						ajouterMenuEvenement($elt, $date_event);
 					}
 					
-					//modifierEvent($date_event,$name,$url);
+					modifierEvenement($date_event,$name,$url);
 					$addArgs .= "?view=edit_event";
 				
 				}
@@ -126,8 +149,8 @@ session_start();
 
 			case "Creer Event" :
 				if ($name = htmlentities(valider("name")))
-				if ($date_event = htmlentities(valider("date_event")))
-				if($url = htmlentities(valider("url"))){
+				if ($date_event = htmlentities(valider("date_event"))){
+					$url = htmlentities(valider("url"));
 					echo $date_event;
 					ajouterEvenement($name, $date_event, $url);
 					$addArgs .= "?view=edit_event";
@@ -351,10 +374,6 @@ session_start();
 		}
 
 	}
-
-	
-
-	$urlBase = dirname($_SERVER["PHP_SELF"]) . "/index.php";
 
 	header("Location:" . $urlBase . $addArgs);
 

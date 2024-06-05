@@ -17,8 +17,8 @@ $surname = valider("surname", "SESSION") ;
 <div class="page-header">
 </div>
 
-	 <a href="index.php?view=edit_menu"><button>Gestionnaire de menus</button></a>
-	 <a href="index.php?view=edit_event"><button>Gestionnaire d'evenements</button></a>
+	 <a href="index.php?view=edit_menu"><button>Gestion des menus</button></a>
+	 <a href="index.php?view=edit_event"><button>Gestion des événements</button></a>
 
 
 

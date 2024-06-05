@@ -53,3 +53,16 @@ th, td {
 
     padding: 5px 20px;
 }
+
+.error {
+    color: white;
+    background-color: crimson;
+
+    font-weight: bold;
+
+    padding: 10px;
+
+    border: solid darkred 2px;
+
+    width: 100%;
+}

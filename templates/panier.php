@@ -35,11 +35,10 @@ function switchProduct(elt){
 echo "<h2>Supprimer une commande </h2>";
 $listeCommande = recupererCommandeUser($email);
 
-if($id_order===Null && count($listeCommande)!= 0){
+if($id_order==Null && count($listeCommande) > 0){
 	$id_order = $listeCommande[0]["id_order"];
-	
 }
-elseif (count($listeCommande)== 0) {echo "Aucune commande"; $id_order = Null;}
+else if (count($listeCommande)== 0) {echo "Aucune commande"; $id_order = Null;}
 mkForm("controleur.php");
 mkSelect("id_order", $listeCommande,"id_order", "name");
 if($id_order !==NUll ){
@@ -54,6 +53,9 @@ mkInput("hidden", "email", $email);
 mkInput("submit", "action", "Annuler commande");
 endForm();
 echo "</br></br>";
+
+echo count($listeCommande);
+
 
 ?>
 

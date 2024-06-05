@@ -1,6 +1,10 @@
 <?php
     if (isset($msg)){
-        echo $msg;
+        if ($msg !== false){
+?>      
+        <p class="error"><?=urldecode($msg)?></p>
+<?php
+        }
     }
 
 ?>

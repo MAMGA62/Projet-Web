@@ -27,8 +27,6 @@ if ($msg = valider("msg")) {
 
 <p class="lead">
 
-	<?php if ($msg) echo $msg; ?>
-
  <form role="form" action="controleur.php">
   <div class="form-group">
     <label for="email">Adresse email</label>

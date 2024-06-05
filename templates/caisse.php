@@ -36,7 +36,7 @@ function switchProduct(elt){
 echo "<h2>Valider une commande </h2>";
 $listeCommande = recupererCommandeNonValide($date_event);
 
-if($id_order===Null && count($listeCommande)!= 0){
+if($id_order==Null && count($listeCommande)> 0){
 	$id_order = $listeCommande[0]["id_order"];
 	
 }

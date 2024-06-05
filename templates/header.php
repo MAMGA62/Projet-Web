@@ -67,7 +67,17 @@ echo "<?xml version=\"1.0\" encoding=\"utf-8\" ?>";
 
 		echo mkHeadLink("<img src=\"ressources/home.png\" width=\"24\"/>", "accueil", $view, "", "style=\"padding:8px;\"");
 
+
+
 		if (!valider("connecte","SESSION")){
+
+			if ($view != "login"
+			&&	$view != "signin"
+			&&	$view != "accueil"){
+				header("Location:index.php?view=login&msg=" . urlencode("Vous n'êtes pas connecté !"));
+				die();
+			}
+
 			echo mkHeadLink("Se connecter","login",$view);
 		
 		} else {
@@ -98,6 +108,11 @@ echo "<?xml version=\"1.0\" encoding=\"utf-8\" ?>";
 
   <!-- Begin page content -->
   <div class="container">
+
+<?php
+	$msg = valider("msg", "GET");
+	include("templates/messages.php");
+?>
 
 
 

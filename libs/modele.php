@@ -17,6 +17,11 @@ function verifUserBdd($login,$passe){
     // on aurait du utiliser SQLSelect
 }
 
+function isUserInBdd($email){
+	$SQL = "SELECT email FROM users WHERE email = '$email'";
+	return SQLGetChamp($SQL);
+}
+
 function isAdmin($email){
     // vérifie si l'utilisateur est un administrateur
     $SQL ="SELECT admin FROM users WHERE email='$email'";
@@ -179,8 +184,23 @@ function ajouterMenuEvenement($id_menu, $date_event){
 }
 
 function modifierEvenement($date_event, $name, $url){
-    $SQL = "UPDATE events set name = '$name', menus_url='$url' WHERE date_event ='$date_event'";
-    return SQLUpdate($SQL);
+
+	$SQL = "";
+
+	if ($name != false){
+		$SQL .= "UPDATE events set name = '$name' WHERE date_event ='$date_event'; ";
+	}
+
+	if ($url != false){
+		$SQL .= "UPDATE events set menus_url='$url' WHERE date_event ='$date_event';";
+	}
+
+	if ($SQL != ""){
+		return SQLUpdate($SQL);
+	} else {
+		return false;
+	}
+    
 }
 
 
