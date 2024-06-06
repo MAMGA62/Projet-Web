@@ -42,7 +42,15 @@ function verifUser($login,$password)
 }
 
 
+function isValidDate($date){
+    $pattern = '/^\d{4}-\d{2}-\d{2}$/';
 
+    if (preg_match($pattern, $date)) {
+        return true;
+    } else {
+        return false;
+    }
+}
 
 /**
  * Fonction à placer au début de chaque page privée

@@ -49,7 +49,7 @@ echo "<?xml version=\"1.0\" encoding=\"utf-8\" ?>";
 <div id="wrap">
   
   <!-- Fixed navbar -->
-  <div class="navbar navbar-default navbar-fixed-top">
+  <div class="navbar navbar-default navbar-fixed-top" style="background-color: #4d4d4d; background-image: none;">
     <div class="container">
       <div class="navbar-header">
         <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
@@ -65,7 +65,12 @@ echo "<?xml version=\"1.0\" encoding=\"utf-8\" ?>";
 
 		// Si l'utilisateur n'est pas connecte, on affiche un lien de connexion
 
-		echo mkHeadLink("<img src=\"ressources/home.png\" width=\"24\"/>", "accueil", $view, "", "style=\"padding:8px;\"");
+		if ($view == "accueil"){
+			echo mkHeadLink("<img src=\"ressources/home.png\" width=\"24\"/>", "accueil", $view, "", "style=\"padding:8px;\"");
+		} else {
+			echo mkHeadLink("<img src=\"ressources/home_white.png\" width=\"24\"/>", "accueil", $view, "", "style=\"padding:8px;\"");
+		}
+		
 
 
 
@@ -94,7 +99,7 @@ echo "<?xml version=\"1.0\" encoding=\"utf-8\" ?>";
 
 			echo mkHeadLink("Mon panier","panier",$view);
 
-			echo "<li> <a href=\"controleur.php?action=Logout\">Se déconnecter</a></li>";
+			echo "<li> <a href=\"controleur.php?action=Logout\" style=\"color: white;\">Se déconnecter</a></li>";
 		} 
 
 			//echo "<li><a href=\"index.php?view=login\">Se connecter</a></li>";

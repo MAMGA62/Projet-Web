@@ -37,7 +37,7 @@ $listeIngredient = recupererContenuNonProduit($id_product);
 $listeContenu = recupererContenuProduit($id_product);
 
 mkForm("controleur.php");
-mkSelect("id_product", $listeProduit,"id_product", "name", $id_product, false, "onchange=\"switchProduct(this)\"");
+mkSelect("id_product", $listeProduit,"id_product", "name", $id_product, false, "onchange=\"switchProduct(this)\"", "Produit à supprimer");
 mkSelect("id_ingredient", $listeContenu,"id_product", "name");
 mkInput("submit", "action", "Supprimer Contenu Produit");
 endForm();
@@ -45,9 +45,9 @@ echo "</br></br>";
 
 echo "<h2>Ajouter un ingredient au produit </h2>";
 mkForm("controleur.php");
-mkSelect("id_product", $listeProduit,"id_product", "name", $id_product, false, "onchange=\"switchProduct(this)\"");
+mkSelect("id_product", $listeProduit,"id_product", "name", $id_product, false, "onchange=\"switchProduct(this)\"", "Ingrédient à ajouter au produit");
 mkSelect("id_ingredient", $listeIngredient,"id_product", "name");
-mkInput("number", "quantity", "", "placeHolder=\"Quantité\"  step=\"1\"");
+mkInput("number", "quantity", "", "min=\"0\" placeHolder=\"Quantité\"  step=\"1\"");
 mkInput("submit", "action", "Ajouter Contenu Produit");
 endForm();
 echo "</br></br>";

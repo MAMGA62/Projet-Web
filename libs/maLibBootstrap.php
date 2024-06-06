@@ -13,9 +13,14 @@ function mkHeadLink($label,$view,$currentView="",$class="", $attrs="")
 	// EX: <?=mkHeadLink("Accueil","accueil",$view)
 	// produit <li class="active"><a href="index.php?view=accueil">Accueil</a></li> si $view= accueil
 
-	if ($view == $currentView) 
+	$sup = "";
+
+	if ($view == $currentView){
 		$class .= " active";
-	return "<li class=\"$class\"><a $attrs href=\"index.php?view=$view\">$label</a></li>";
+	} else {
+		$sup = "style=\"color: white;\"";
+	}
+	return "<li class=\"$class\"><a $attrs href=\"index.php?view=$view\" $sup>$label</a></li>";
 }
 
 ?>

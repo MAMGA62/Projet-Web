@@ -30,6 +30,7 @@ function switchProduct(elt){
 	
 </script>
 <div class="page-header">
+	<h2>Caisse</h2>
 </div>
 
 <?php
@@ -42,7 +43,7 @@ if($id_order==Null && count($listeCommande)> 0){
 }
 elseif (count($listeCommande)== 0) {echo "Aucune commande"; $id_order = Null;}
 mkForm("controleur.php");
-mkSelect("id_order", $listeCommande,"id_order", "email");
+mkSelect("id_order", $listeCommande,"id_order", "name", $id_order, false, "onchange=\"switchProduct(this)\"");
 if($id_order !==NUll ){
 	$content = recupererContenuCommande($id_order);
 	$user = recupererUserCommande($id_order)[0];

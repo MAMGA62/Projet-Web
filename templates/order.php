@@ -140,7 +140,7 @@
             // tprint($selected_values);
 
             if (empty($dates = recupererEvenements())){
-                echo "<h3>Aucun événement n'est prévu pour le moment...</h3><br/><hr/>";
+                echo "<h4>Aucun événement n'est prévu pour le moment...</h4><br/><hr/>";
             }
         ?>
         
@@ -152,7 +152,7 @@
             //tprint($dates);
             $dates = recupererEvenements();
 
-            mkSelect("date_event", $dates, "date_event", "date_event", $selected_values["date_event"],$champLabel2=false, "id=\"date_event\" onchange='updateMenus(" . json_encode($infos) . ")'\"");
+            mkSelect("date_event", $dates, "date_event", "name", $selected_values["date_event"],"date_event", "id=\"date_event\" onchange='updateMenus(" . json_encode($infos) . ")'\"");
         
         ?>
             <hr>

@@ -30,7 +30,7 @@ session_start();
 					$login = htmlentities($login);
 					$passe = htmlentities($passe);
 
-					if (verifUser($login,$passe)) {
+					if (verifUser($login,$passe) && !isBanned($login)) {
 						// tout s'est bien passé, doit-on se souvenir de la personne ? 
 						if (valider("remember")) {
 							setcookie("login",$login , time()+60*60*24*30);
@@ -42,11 +42,18 @@ session_start();
 							setcookie("remember",false, time()-3600);
 						}
 
-					} else {
-						$msg = "Adresse email ou mot de passe invalide...";
+					}
+					else {
+						if(isBanned($login)){
+							$msg = "Vous avez été banni... Contactez un administrateur pour plus d'informations.";
+						} 
+						else {
+							$msg = "Adresse email ou mot de passe invalide...";
+						}
 						$addArgs = "?view=login&msg=" . urlencode($msg);
 					}
-				}
+					}
+				
 
 				// On redirigera vers la page index automatiquement
 			break;
@@ -130,17 +137,18 @@ session_start();
 				
 				
 			case "Modifier Event" :
-				if ($date_event = htmlentities(valider("date_event")))
-				if ($id_menu = valider("id_menu")){
+				if ($date_event = htmlentities(valider("date_event"))){
 
 					$name = htmlentities(valider("name"));
 					$url = htmlentities(valider("url"));
 
-					clearEvenement($date_event);
+					if($id_menu = valider("id_menu")){
+						clearEvenement($date_event);
+
 					foreach($id_menu as $elt){
 						echo $elt;
 						ajouterMenuEvenement($elt, $date_event);
-					}
+					}}
 					
 					modifierEvenement($date_event,$name,$url);
 					$addArgs .= "?view=edit_event";
@@ -152,7 +160,8 @@ session_start();
 
 			case "Creer Event" :
 				if ($name = htmlentities(valider("name")))
-				if ($date_event = htmlentities(valider("date_event"))){
+				if ($date_event = htmlentities(valider("date_event")))
+				if (isValidDate($date)){
 					$url = htmlentities(valider("url"));
 					echo $date_event;
 					ajouterEvenement($name, $date_event, $url);
@@ -170,73 +179,105 @@ session_start();
 				
 				break;
 			case "Creer Ingredient" :
-					if ($name = htmlentities(valider("name")))
-					if ($quantity = valider("quantity")){
+					$addArgs .= "?view=edit_stock";
+					if (($name = htmlentities(valider("name")))
+					&&	($quantity = valider("quantity"))){
 						if($quantity < 1)$quantity = 1;
 						ajouterIngredient($name, $quantity);
-						$addArgs .= "?view=edit_stock";
+					} else {
+
+					$msg = "Veuillez renseigner tous les champs";
+					$addArgs .= "&msg=" . urlencode($msg);
+
 					}
 					
 					break;
 					
 				case "Supprimer Ingredient":
+					$addArgs .= "?view=edit_stock";
 					if ($id_product = valider("id_product")){
 					supprimerIngredient($id_product);
-					$addArgs .= "?view=edit_stock";
 					
+					} else {
+
+					$msg = "Veuillez renseigner tous les champs";
+					$addArgs .= "&msg=" . urlencode($msg);
 					}
-					
+
 					break;
+
 					case "Modifier Stock":
+						$addArgs .= "?view=edit_stock";
 						if ($id_product = valider("id_product"))
 						if(($quantity = valider("quantity"))!==false)
 						{
+						if($quantity < 0)$quantity = 0;
 						modifierStock($id_product, $quantity);
-						$addArgs .= "?view=edit_stock";
 						
+						} else {
+
+						$msg = "Veuillez renseigner tous les champs";
+						$addArgs .= "&msg=" . urlencode($msg);
 						}
-						
 						break;
 
 
 				case "Creer Produit" :
+					$addArgs .= "?view=edit_product";
 					if ($name = htmlentities(valider("name")))
 					if ($price = valider("price")){
 						if($price < 0)$price = 1;
 						ajouterProduit($name, $price);
-						$addArgs .= "?view=edit_product";
-					}
+					} else {
 					
+					$msg = "Veuillez renseigner tous les champs";
+					$addArgs .= "&msg=" . urlencode($msg);
+					
+					}
 					break;
 					
 				case "Supprimer Produit":
+					$addArgs .= "?view=edit_product";
+
 					if ($id_product = valider("id_product")){
 					supprimerProduit($id_product);
-					$addArgs .= "?view=edit_product";
 					
+					} else {
+
+					$msg = "Veuillez renseigner tous les champs";
+					$addArgs .= "&msg=" . urlencode($msg);
 					}
 					
 					break;
+
 					case "Ajouter Contenu Produit" :
+						$addArgs .= "?view=edit_product_content";
 						if ($id_product = valider("id_product"))
 						if($quantity = valider("quantity"))
 						if ($id_ingredient = valider("id_ingredient")){
 							if($quantity<1)$quantity = 1;
 							ajouterIngredientProduit($id_product, $id_ingredient, $quantity);
-							$addArgs .= "?view=edit_product_content";
+						} else {
+
+						$msg = "Veuillez renseigner tous les champs";
+						$addArgs .= "&msg=" . urlencode($msg);
 						}
-						
 						break;
 						
 					case "Supprimer Contenu Produit":
+
+						$addArgs .= "?view=edit_product_content";
+
 						if ($id_product = valider("id_product"))
 						if ($id_ingredient = valider("id_ingredient")){
 
 							supprimerIngredientProduit($id_product, $id_ingredient);
-						$addArgs .= "?view=edit_product_content";
 						
+						} else {
+
+						$msg = "Veuillez renseigner tous les champs";
+						$addArgs .= "&msg=" . urlencode($msg);
 						}
-						
 						break;
 
 		
@@ -274,6 +315,8 @@ session_start();
 						$addArgs = "?view=panier";
 					} else {
 						$addArgs = "?view=order";
+						$msg = "Erreur lors de la création de la commande...";
+						$addArgs .= "&msg=" . urlencode($msg);
 					}
 
 				}

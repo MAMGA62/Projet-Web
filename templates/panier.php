@@ -29,6 +29,7 @@ function switchProduct(elt){
 	
 </script>
 <div class="page-header">
+	<h2>Panier</h2>
 </div>
 
 <?php
@@ -40,7 +41,7 @@ if($id_order==Null && count($listeCommande) > 0){
 }
 else if (count($listeCommande)== 0) {echo "Aucune commande"; $id_order = Null;}
 mkForm("controleur.php");
-mkSelect("id_order", $listeCommande,"id_order", "name");
+mkSelect("id_order", $listeCommande,"id_order", "name", $id_order, false, "onchange=\"switchProduct(this)\"");
 if($id_order !==NUll ){
 $content = recupererContenuCommande($id_order);
 foreach($content as $elt){
@@ -53,8 +54,6 @@ mkInput("hidden", "email", $email);
 mkInput("submit", "action", "Annuler commande");
 endForm();
 echo "</br></br>";
-
-echo count($listeCommande);
 
 
 ?>

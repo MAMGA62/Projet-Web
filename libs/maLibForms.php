@@ -103,13 +103,16 @@ function mkTable($tabData,$listeChamps=false)
 // mkSelect("idUser",$users,"id","pseudo");
 // TESTER AVEC mkSelect("idUser",$users,"id","pseudo",2,"couleur");
 
-function mkSelect($nomChampSelect, $tabData,$champValue, $champLabel,$selected=false,$champLabel2=false, $attrs="")
+function mkSelect($nomChampSelect, $tabData,$champValue, $champLabel,$selected=false,$champLabel2=false, $attrs="", $default_value="")
 {
 
 	$multiple=""; 
 	if (preg_match('/.*\[\]$/',$nomChampSelect)) $multiple =" multiple =\"multiple\" ";
 
 	echo "<select $multiple name=\"$nomChampSelect\" $attrs>\n";
+
+	echo "<option disabled=\"disabled\" selected=\"selected\" value=\"\">" . $default_value . "</option\n";
+
 	foreach ($tabData as $data)
 	{
 		$sel = "";	// par défaut, aucune option n'est préselectionnée 

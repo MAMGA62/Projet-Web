@@ -1,6 +1,6 @@
 
 * {
-    /*font-family: "Open Sans";*/
+    font-family: "Arial";
 }
 
 body {
@@ -27,6 +27,31 @@ h6 {
     font-size: 1em;
 }
 
+select {
+    padding: 5px;
+    vertical-align: middle;
+}
+
+form input[type="submit"] {
+    color: white;
+    background-color: #4D4D4D;
+
+    border-radius: 20px;
+
+    font-size: 1.4em;
+
+    padding: 10px 16px;
+    margin: 10px 5px;
+
+}
+
+
+input {
+    padding: 5px;
+
+    margin: 5px;
+}
+
 /*
 .page-header {
     text-align: center;
@@ -47,9 +72,9 @@ button {
 
     border-radius: 20px;
 
-    font-size: 1.5em;
+    font-size: 1.4em;
 
-    padding: 12px 18px;
+    padding: 10px 16px;
     margin: 10px 5px;
 }
 
@@ -64,6 +89,14 @@ th, td {
     padding: 5px 20px;
 }
 
+p {
+    font-size: 1.4em;
+}
+
+iframe {
+    float: left;
+}
+
 .error {
     color: white;
     background-color: crimson;
@@ -75,4 +108,9 @@ th, td {
     border: solid darkred 2px;
 
     width: 100%;
+}
+
+.img_menu {
+    max-height: 600px;
+    max-width: 1000px;
 }

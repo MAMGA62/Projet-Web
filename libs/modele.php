@@ -28,6 +28,12 @@ function isAdmin($email){
     return SQLGetChamp($SQL); 
 }
 
+function isBanned($email){
+	// vérifie si l'utilisateur est banni
+	$SQL ="SELECT banned FROM users WHERE email='$email'";
+	return SQLGetChamp($SQL); 
+}
+
 // Connexion :
 function connecterUtilisateur($email, $password){
 	$SQL="SELECT email, first_name, surname, admin, waster_score, FROM users WHERE email = '$email' AND password = '$password'AND banned = 0;";
@@ -237,6 +243,11 @@ function recupererIngredient(){
     return parcoursRs(SQLSelect($SQL));
 }
 
+function ajouterIngredient($name, $quantity){
+    $SQL="INSERT INTO products(name, quantity, price) VALUES('$name', '$quantity', '0');";
+    return SQLInsert($SQL);
+}
+
 function supprimerIngredient($id_product){
     $SQL = "DELETE FROM products_content WHERE id_ingredient = '$id_product'; DELETE FROM products WHERE id_product = '$id_product'; ";
     return SQLDelete($SQL);
@@ -386,5 +397,11 @@ function recupererQuantiteProduitMenu($id_menu, $id_produit){
 function recupererUserCommande($id_order){
 	$SQL = "SELECT first_name, surname FROM users JOIN orders ON users.email = orders.email WHERE orders.id_order =  '$id_order'";
     return parcoursRs(SQLSelect($SQL));
+}
+
+function urlEvenement($date_event){
+    $SQL = "SELECT menus_url FROM events WHERE date_event = '$date_event';";
+    return SQLGetChamp($SQL);
+
 }
 ?>

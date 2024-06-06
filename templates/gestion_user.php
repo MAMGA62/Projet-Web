@@ -23,9 +23,11 @@ if ((!valider("connecte","SESSION")) || (!isAdmin($_SESSION["email"]))) {
 	// car la page header envoie un résultat HTML au client 
 	// ET que le serveur ne bufferise pas 
 	
-	// On choisit de charger la vue de login 
-	$_REQUEST["msg"] = "L'interface d'administration des utilisateurs nécessite de se connecter !"; 
-	include("templates/login.php");
+	// On choisit de charger la vue de login
+	$msg = "L'interface d'administration des utilisateurs nécessite d'être un administrateur !"; 
+	header("Location:index.php?view=accueil&msg=" . urlencode($msg));
+	die("");
+
 } else {
 
 // la partie administration ne doit pas etre offerte aux utilisateurs connectés qui ne sont pas administrateurs
@@ -39,18 +41,22 @@ if ((!valider("connecte","SESSION")) || (!isAdmin($_SESSION["email"]))) {
 
     <p class="lead"> 
 
-			<h2>Liste des utilisateurs :</h2>
+			<h3>Liste des utilisateurs</h3>
 			<?php
 			echo "<h4>Liste des utilisateurs autorisés :</h4>"; 
 			$users = listerUtilisateurs("nbl");
 			// tprint($users);	// préférer un appel à 
+			echo "<div style=\"display:flex; justify-content:center;\">";
 			mkTable($users,array("email","surname", "first_name", "admin"));
+			echo "</div>";
 
-			echo "<hr />";
+			echo "<hr/>";
 			echo "<h4>Liste des utilisateurs non autorisés :</h4>"; 
 			$users = listerUtilisateurs("bl");
 			//tprint($users);	// préférer un appel à mkTable($users);
+			echo "<div style=\"display:flex; justify-content:center;\">";
 			mkTable($users,array("email","surname", "first_name", "admin"));
+			echo "</div>";
 			?>
 			<hr />
 			
@@ -60,7 +66,7 @@ if ((!valider("connecte","SESSION")) || (!isAdmin($_SESSION["email"]))) {
 //if (valider("isAdmin","SESSION")) {
 if (isAdmin($_SESSION["email"])) {
 ?>			
-			<h2>Gestion des utilisateurs</h2>
+			<h3>Gestion des utilisateurs</h3>
 			
 			
 <?php
@@ -73,11 +79,13 @@ if (isAdmin($_SESSION["email"])) {
     		"admin",
     		array("0"=>"Utilisateurs standards", "1"=>"Administrateurs"));
 ?>
+	<div>
 			<button type="submit" name="action" value="Interdire">Interdire</button>
 			<button type="submit" name="action" value="Autoriser">Autoriser</button>
 			<button type="submit" name="action" value="Supprimer">Supprimer</button>
 			<button type="submit" name="action" value="Retrograder">Retrograder</button>
 			<button type="submit" name="action" value="Promouvoir">Promouvoir</button>
+	</div>
 <?php				 
 			endForm(); 	
 			
