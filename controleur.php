@@ -42,7 +42,10 @@ session_start();
 							setcookie("remember",false, time()-3600);
 						}
 
-					}	
+					} else {
+						$msg = "Adresse email ou mot de passe invalide...";
+						$addArgs = "?view=login&msg=" . urlencode($msg);
+					}
 				}
 
 				// On redirigera vers la page index automatiquement
@@ -278,7 +281,7 @@ session_start();
 				break;
 				
 			case 'Promouvoir' : 				
-				if ($email = htmlentities(valider("email")))
+				if ($email = valider("email"))
 				if (valider("connecte","SESSION"))
 				if (isAdmin($_SESSION["email"])) 
 				if (is_array($email)) {
@@ -293,7 +296,7 @@ session_start();
 			break;
 
 			case 'Retrograder' : 				
-				if ($email = htmlentities(valider("email")))
+				if ($email = valider("email"))
 				if (valider("connecte","SESSION"))
 				if (isAdmin($_SESSION["email"])) 
 				if (is_array($email)) {
@@ -309,7 +312,7 @@ session_start();
 			
 
 			case 'Autoriser' : 				
-				if ($email = htmlentities(valider("email")))
+				if ($email = valider("email"))
 				if (valider("connecte","SESSION"))
 				if (isAdmin($_SESSION["email"])) 
 				if (is_array($email)) {
@@ -324,7 +327,7 @@ session_start();
 			break;
 
 			case 'Interdire' :  
-				if ($email = htmlentities(valider("email")))
+				if ($email = valider("email"))
 				if (valider("connecte","SESSION"))
 				if (isAdmin($_SESSION["email"])) 
 				if (is_array($email)) {
@@ -339,7 +342,7 @@ session_start();
 			break;
 
 			case 'Supprimer' :  
-				if ($email = htmlentities(valider("email")))
+				if ($email = valider("email"))
 				if (valider("connecte","SESSION"))
 				if (isAdmin($_SESSION["email"])) 
 				if (is_array($email)) {

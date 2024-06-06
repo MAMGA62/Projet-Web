@@ -30,7 +30,7 @@ if (basename($_SERVER["PHP_SELF"]) != "index.php")
       ?>
 
           <h1>Bienvenue <?=$surname?> <?=$first_name?> !</h1>
-          <h2>Que vas-tu commander aujourd'hui?</h2>
+          <h3>Que vas-tu commander aujourd'hui?</h3>
       
       <?php
       
@@ -38,7 +38,7 @@ if (basename($_SERVER["PHP_SELF"]) != "index.php")
       
       ?>
         <h1>Bienvenue à la cafétéria</h1>
-        <h2>Vous pouvez ici réserver vos repas pour vous restaurer</h2>
+        <h3>Vous pouvez ici réserver vos repas pour vous restaurer</h3>
 
         <br/>
         <br/>
