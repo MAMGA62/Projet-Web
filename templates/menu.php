@@ -50,7 +50,7 @@ mkForm("controleur.php");
 ?>
 <label for="date_event">Date :</label>
 <?php
-mkSelect("date_event", $listeEvent,"date_event", "name", $date_event, false, "onchange=\"switchProduct(this)\" id=date_event");
+mkSelect("date_event", $listeEvent,"date_event", "name", $date_event, false, "onchange=\"switchProduct(this)\" id=date_event", "date de l'événement");
 endForm();
 $url = urlEvenement($date_event);
 

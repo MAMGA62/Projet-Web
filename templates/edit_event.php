@@ -33,28 +33,28 @@ $surname = valider("surname", "SESSION") ;
 </div>
 
 <?php
-echo "<h3>Supprimer un event </h3>";
+echo "<h3>Supprimer un événement </h3>";
 $listeEvent = recupererEvenements();
 mkForm("controleur.php");
-mkSelect("date_event", $listeEvent,"date_event", "name");
+mkSelect("date_event", $listeEvent,"date_event", "name", false, false, "", "Événement à supprimer");
 mkInput("submit", "action", "Supprimer Event");
 endForm();
 echo "</br></br>";
 
-echo "<h3>Créer un event </h3>";
+echo "<h3>Créer un événement </h3>";
 mkForm("controleur.php");
-mkInput("text", "name", "", "placeHolder=\"Nom de l'event à ajouter\"");
+mkInput("text", "name", "", "placeHolder=\"Nom de l'événement à créer\"");
 mkInput("text", "date_event", "", "placeHolder=\"Date (YYYY-MM-DD)\"");
-mkInput("text", "url", "", "placeHolder=\"Url de l'event à ajouter\"");
+mkInput("text", "url", "", "placeHolder=\"Url de l'événement à ajouter\"");
 mkInput("submit", "action", "Creer Event");
 endForm();
 echo "</br></br>";
 
 $listeMenu = recupererMenus();
-echo "<h3>Modifier un event </h3>";
+echo "<h3>Modifier un événement </h3>";
 mkForm("controleur.php");
-mkSelect("date_event", $listeEvent,"date_event", "name");
-mkSelect("id_menu[]", $listeMenu,"id_menu", "name");
+mkSelect("date_event", $listeEvent,"date_event", "name", false, false, "", "Événement à modifier");
+mkSelect("id_menu[]", $listeMenu,"id_menu", "name", false, false, "", "Menus à ajouter");
 mkInput("text", "name", "", "placeHolder=\"Nom\"");
 mkInput("text", "url", "", "placeHolder=\"url\"");
 mkInput("submit", "action", "Modifier Event");

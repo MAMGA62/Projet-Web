@@ -28,10 +28,11 @@ function switchProduct(elt){
 </script>
 
 <div class="page-header">
+	<h2>Gestion du contenu des produits</h2>
 </div>
 
 <?php
-echo "<h2>Supprimer un ingredient du produit </h2>";
+echo "<h3>Supprimer un ingredient du produit </h3>";
 $listeProduit = recupererProduits();
 $listeIngredient = recupererContenuNonProduit($id_product);
 $listeContenu = recupererContenuProduit($id_product);
@@ -43,11 +44,11 @@ mkInput("submit", "action", "Supprimer Contenu Produit");
 endForm();
 echo "</br></br>";
 
-echo "<h2>Ajouter un ingredient au produit </h2>";
+echo "<h3>Ajouter un ingredient au produit </h3>";
 mkForm("controleur.php");
 mkSelect("id_product", $listeProduit,"id_product", "name", $id_product, false, "onchange=\"switchProduct(this)\"", "Ingrédient à ajouter au produit");
 mkSelect("id_ingredient", $listeIngredient,"id_product", "name");
-mkInput("number", "quantity", "", "min=\"0\" placeHolder=\"Quantité\"  step=\"1\"");
+mkInput("number", "quantity", "", "min=\"0\" max=\"9999\" placeHolder=\"Quantité\"  step=\"1\"");
 mkInput("submit", "action", "Ajouter Contenu Produit");
 endForm();
 echo "</br></br>";

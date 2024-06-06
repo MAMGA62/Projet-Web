@@ -137,6 +137,7 @@ session_start();
 				
 				
 			case "Modifier Event" :
+				$addArgs .= "?view=edit_event";
 				if ($date_event = htmlentities(valider("date_event"))){
 
 					$name = htmlentities(valider("name"));
@@ -151,30 +152,39 @@ session_start();
 					}}
 					
 					modifierEvenement($date_event,$name,$url);
-					$addArgs .= "?view=edit_event";
 				
+				} else {
+					$msg = "Veuillez renseigner tous les champs";
+					$addArgs .= "&msg=" . urlencode($msg);
 				}
 				
 				break;
 
 
 			case "Creer Event" :
-				if ($name = htmlentities(valider("name")))
-				if ($date_event = htmlentities(valider("date_event")))
-				if (isValidDate($date)){
+				$addArgs .= "?view=edit_event";
+				if (($name = htmlentities(valider("name")))
+				&&	($date_event = htmlentities(valider("date_event")))
+				&&	isValidDate($date_event)){
 					$url = htmlentities(valider("url"));
-					echo $date_event;
+					//echo $date_event;
 					ajouterEvenement($name, $date_event, $url);
-					$addArgs .= "?view=edit_event";
+					
+				} else {
+					$msg = "Erreur lors de la création de l'événement...";
+					$addArgs .= "&msg=" . urlencode($msg);
 				}
 				
 				break;
 				
 			case "Supprimer Event":
+				$addArgs .= "?view=edit_event";
 				if ($date_event = htmlentities(valider("date_event"))){
 				supprimerEvenement($date_event);
-				$addArgs .= "?view=edit_event";
 				
+				} else {
+					$msg = "Erreur lors de la suppression de l'événement...";
+					$addArgs .= "&msg=" . urlencode($msg);
 				}
 				
 				break;

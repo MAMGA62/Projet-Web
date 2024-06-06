@@ -111,10 +111,13 @@ function mkSelect($nomChampSelect, $tabData,$champValue, $champLabel,$selected=f
 
 	echo "<select $multiple name=\"$nomChampSelect\" $attrs>\n";
 
-	echo "<option disabled=\"disabled\" selected=\"selected\" value=\"\">" . $default_value . "</option\n";
+	if ($default_value !== ""){
+		echo "<option disabled=\"disabled\" selected=\"selected\" value=\"\">" . $default_value . "</option>\n";
+	}
 
 	foreach ($tabData as $data)
 	{
+		//tprint($data);
 		$sel = "";	// par défaut, aucune option n'est préselectionnée 
 		// MAIS SI le champ selected est fourni
 		// on teste s'il est égal à l'identifiant de l'élément en cours d'affichage

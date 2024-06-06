@@ -24,14 +24,28 @@ if ((!valider("connecte","SESSION")) || (!isAdmin($_SESSION["email"]))) {
 
 } else {
 $listeIngredient = recupererIngredient();
-foreach($listeIngredient as $elt){
-    $color = "black";
-    if($elt["quantity"] == 0)$color="red";
-    echo "<p> <font color=$color> Nom: " . $elt["name"] . " Stock: ". $elt["quantity"]. "</font></p>";
-}
+?>
+<table style="text-align: center; width:95%;">
+    <th>Nom de l'ingrédient</th>
+    <th>Quantité en stock</th>
+<?php
+    foreach($listeIngredient as $elt){
+        $color = "black";
+        if($elt["quantity"] == 0) $color="red";
 
+?>
+    <tr>
+        <td style="color:<?=$color?>;"><?=$elt["name"]?></td>
+        <td style="color:<?=$color?>;"><?=$elt["quantity"]?></td>
+    </tr>
+<?php
+        //echo "<p> <font color=$color> Nom: " . $elt["name"] . " Stock: ". $elt["quantity"]. "</font></p>";
+    }
+?>
+</table>
+<?php
 
-}
+    }
 ?>
 
 </body>

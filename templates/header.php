@@ -87,12 +87,14 @@ echo "<?xml version=\"1.0\" encoding=\"utf-8\" ?>";
 		
 		} else {
 			if(isAdmin($_SESSION["email"])){
-                echo mkHeadLink("Stock","stock",$view);
-                echo mkHeadLink("Gestion des utilisateurs","gestion_user",$view);
-				echo mkHeadLink("Gestion des événements", "edit_event",$view);
-				echo mkHeadLink("Gestion des menus", "edit_menu",$view);
-                echo mkHeadLink("Caisse","caisse",$view);
+                
+                echo mkHeadLink("Gestion utilisateurs","gestion_user",$view);
 
+				echo mkHeadLink("Stock","stock",$view);
+				echo mkHeadLink("Gestion menus", "edit_menu",$view);
+				echo mkHeadLink("Gestion événements", "edit_event",$view);
+                echo mkHeadLink("Caisse","caisse",$view);
+				echo mkHeadLink("", "&view=accueil",$view); 
             }
 			echo mkHeadLink("Menu", "menu",$view); 
 			echo mkHeadLink("Commander","order",$view); 
